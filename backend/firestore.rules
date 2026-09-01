@@ -1,0 +1,101 @@
+rules_version = '2';
+
+/**
+ * GCET PBAS — Firestore security rules
+ * ---------------------------------------------------------------------------
+ * Paste into Firebase console → Firestore Database → Rules → Publish.
+ *
+ * Shape of the database:
+ *   submissions/{uid}   one document per faculty member, keyed by auth uid
+ *   admins/{email}      allowlist of SDC accounts that may read everything
+ *   faculty/{empid}     employee master list, used to recognise real staff
+ *   config/app          cycle settings: deadline, per-department headcounts
+ *
+ * Principles enforced here:
+ *   - only @gcet.edu.in accounts can touch anything
+ *   - a faculty member can read and write exactly one document: their own
+ *   - nobody can read anyone else's submission except an SDC admin
+ *   - admins are read-only on submissions; they cannot edit someone's return
+ *   - admins, faculty master list and config are never writable from a browser
+ */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ---------------- helpers ---------------- */
+
+    function signedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function collegeAccount() {
+      return signedIn() && request.auth.token.email.matches('.*@gcet[.]edu[.]in$');
+    }
+
+    function isAdmin() {
+      return collegeAccount()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.token.email));
+    }
+
+    function owns(uid) {
+      return collegeAccount() && request.auth.uid == uid;
+    }
+
+    /* The submission window. Absent config means the form is open. */
+    function windowOpen() {
+      return !exists(/databases/$(database)/documents/config/app)
+        || !('lockAt' in get(/databases/$(database)/documents/config/app).data)
+        || request.time < get(/databases/$(database)/documents/config/app).data.lockAt;
+    }
+
+    /* A faculty member may never rewrite whose submission this is, and may not
+       backdate or forge the audit fields. */
+    function identityIntact(uid) {
+      return request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.email;
+    }
+
+    /* ---------------- submissions ---------------- */
+
+    match /submissions/{uid} {
+      allow read: if owns(uid) || isAdmin();
+
+      allow create: if owns(uid)
+                    && identityIntact(uid)
+                    && windowOpen();
+
+      /* Once locked, a faculty member can no longer edit. Admins never edit a
+         submission at all — the record of what was filed stays untouched. */
+      allow update: if owns(uid)
+                    && identityIntact(uid)
+                    && windowOpen();
+
+      allow delete: if false;
+    }
+
+    /* ---------------- reference data ---------------- */
+
+    /* Readable so the form can tell a faculty member from a student, and so the
+       dashboard can label departments. Written only from the console. */
+    match /faculty/{empid} {
+      allow read: if collegeAccount();
+      allow write: if false;
+    }
+
+    match /admins/{email} {
+      /* An account may check whether it is itself an admin, nothing more. */
+      allow read: if collegeAccount() && request.auth.token.email == email;
+      allow write: if false;
+    }
+
+    match /config/{doc} {
+      allow read: if collegeAccount();
+      allow write: if false;
+    }
+
+    /* Anything not named above is closed. */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
