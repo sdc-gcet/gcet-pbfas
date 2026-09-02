@@ -51,11 +51,37 @@ reference. Anyone not listed here cannot open the dashboard.
 | `cycle` | string | `2025-26` |
 | `cycleLabel` | string | `July 2025 – June 2026` |
 | `lockAt` | timestamp | the submission deadline, or leave the field out for no deadline |
-| `headcount` | map | department name → total faculty, e.g. `Computer Science & Engineering (CSE): 62` |
+| `defaultHeadcount` | number | `50` — used for any department not listed in `headcount` |
+| `headcount` | map | *optional*, department name → total faculty. Only list departments whose figure differs from `defaultHeadcount`. |
 
-`headcount` drives the per-faculty normalisation on the comparison charts. Without
-it the dashboard still works, it just can't show averages — only totals, which
-flatter large departments.
+These drive the per-faculty normalisation on the comparison charts. The dashboard
+reads `headcount[dept]`, falling back to `defaultHeadcount`.
+
+Note that while every department shares the same figure, the per-faculty view is
+just every total divided by the same number — the shape of the comparison is
+unchanged. It only starts saying something once real headcounts are in.
+
+### Department names must match exactly
+
+The `headcount` keys have to be byte-identical to the values in the form's
+department dropdown, or they silently won't match. Copy from here — four of them
+contain an **en-dash** `–`, not a hyphen `-`:
+
+```
+Computer Science & Engineering (CSE)
+CSE – Artificial Intelligence & Machine Learning
+CSE – Data Science
+CSE – Cyber Security
+Information Technology (IT)
+Electronics & Communication Engineering (ECE)
+Electrical & Electronics Engineering (EEE)
+Mechanical Engineering (ME)
+Civil Engineering (CE)
+Master of Business Administration (MBA)
+Humanities & Sciences (H&S)
+Physical Education
+Other
+```
 
 ### Optional: the faculty master list
 
