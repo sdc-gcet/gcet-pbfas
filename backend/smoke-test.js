@@ -46,16 +46,25 @@ function makeCtx(fetchMock, endpoint) {
   return win;
 }
 
-/* ---------- 1. as shipped: unconfigured ---------- */
+/* ---------- 1. the fallback: no endpoint configured ----------
+   Forced, rather than assumed: once the real /exec URL is filled in, the
+   shipped file is configured, but the fallback path must still hold. */
 (function () {
-  const win = makeCtx(() => { throw new Error('no network expected'); });
+  const win = makeCtx(() => { throw new Error('no network expected'); }, 'PASTE_APPS_SCRIPT_EXEC_URL');
   const P = win.PBAS;
-  t('ships unconfigured', P.configured === false, 'configured=' + P.configured);
+  t('a placeholder endpoint reads as unconfigured', P.configured === false, 'configured=' + P.configured);
   t('cycle is 2025-26', P.cycle === '2025-26', P.cycle);
   P.submit({ profile: { empid: 'X' } }, [], () => {})
     .then(() => t('unconfigured submit rejects', false, 'it resolved'))
     .catch(e => t('unconfigured submit rejects with a clear message',
                   /not configured yet/.test(e.message), e.message));
+})();
+
+/* The shipped file should now carry a real endpoint. */
+(function () {
+  const win = makeCtx(() => { throw new Error('no network expected'); });
+  t('the shipped file has a real endpoint wired in',
+    win.PBAS.configured === true, 'still a placeholder');
 })();
 
 /* ---------- 2. configured, against a fake endpoint ---------- */
