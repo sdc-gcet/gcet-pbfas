@@ -3,8 +3,9 @@
    thing under test is the shipped code, not a copy. */
 const fs = require('fs');
 const vm = require('vm');
+const path = require('path');
 
-const html = fs.readFileSync('../index.html', 'utf8');
+const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const blocks = [...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)]
   .filter(m => m[2].trim() && !/text\/babel/.test(m[1]));
 if (blocks.length !== 1) { console.error('expected 1 plain JS block, got', blocks.length); process.exit(1); }

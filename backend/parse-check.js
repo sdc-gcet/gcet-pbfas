@@ -1,7 +1,8 @@
 const fs = require('fs');
 const parser = require('@babel/parser');
+const path = require('path');
 
-const src = fs.readFileSync('../index.html', 'utf8');
+const src = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
 function lineOf(text, idx) { return text.slice(0, idx).split('\n').length; }
 
