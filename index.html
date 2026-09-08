@@ -313,6 +313,17 @@
   }
 
   /* ============ counts ============ */
+  .countgroup{margin-bottom:20px}
+  .countgroup:last-of-type{margin-bottom:0}
+  .countgroup.ruled{padding-top:18px;border-top:1px solid var(--line)}
+  .countgroup > h4{
+    font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink-2);margin:0 0 3px;
+  }
+  .countgroup > p{margin:0 0 13px;font-size:12.5px;color:var(--ink-3);line-height:1.45}
+  .countgroup .counts{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+  .countgroup .cbox label{min-height:0}
+
   .counts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
   .cbox{display:flex;flex-direction:column;gap:6px}
   .cbox label{font-size:12px;font-weight:500;color:var(--ink-2);line-height:1.35;min-height:2.7em;display:flex;align-items:flex-end}
@@ -418,6 +429,38 @@
   }
   .okbox{border:1px solid color-mix(in srgb,var(--ok) 42%,var(--line));background:var(--ok-soft);border-radius:var(--r-lg);padding:16px 20px;margin-bottom:20px;font-size:13.5px;color:var(--ok);font-weight:500}
 
+  /* ============ backend: account, drafts, submission ============ */
+  .acct{
+    display:flex;align-items:center;gap:9px;flex:none;padding:5px 11px;
+    border:1px solid var(--line-2);border-radius:999px;background:var(--surface-2);
+    font-size:12px;color:var(--ink-2);max-width:290px;
+  }
+  .acct .who{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+  .acct .who b{font-size:12px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .acct .who span{font-size:10.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .acct .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:none}
+  .acct button{border:0;background:transparent;color:var(--ink-3);font-size:11px;font-weight:600;text-decoration:underline;text-underline-offset:2px;padding:0;flex:none}
+  .acct button:hover{color:var(--danger)}
+
+  .cloudpill{flex:none;font-size:11px;color:var(--ink-3);padding:0 2px;white-space:nowrap}
+  .cloudpill.failed{color:var(--warn)}
+
+  .notebox{
+    border:1px solid color-mix(in srgb,var(--brass) 40%,var(--line));background:var(--brass-soft);
+    border-radius:var(--r-lg);padding:16px 20px;margin-bottom:20px;font-size:13.5px;color:var(--ink-2);
+    display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  }
+  .notebox b{color:var(--ink);font-weight:600}
+  .notebox .sp{flex:1 1 auto}
+
+  .sendpanel{margin-top:16px}
+  .sendpanel .steps{font-size:12.5px;color:var(--ink-3);margin:10px 0 0;font-variant-numeric:tabular-nums}
+  .sendpanel .fail{margin:12px 0 0;font-size:12.5px;color:var(--warn)}
+  .sendrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:16px}
+  .sendrow .sp{flex:1 1 auto}
+  .receipt{font-size:13px;color:var(--ink-2);margin:10px 0 0;line-height:1.6}
+  .receipt code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:var(--surface-3);padding:1px 6px;border-radius:4px}
+
   .rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
   .rsec h5{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);margin:0 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
   .rrow{display:flex;gap:14px;padding:3.5px 0;font-size:13px;align-items:baseline}
@@ -433,6 +476,110 @@
   .signs{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:26px;margin-top:34px}
   .sign{border-top:1px solid var(--line-2);padding-top:8px;font-size:12px;color:var(--ink-3)}
 
+
+  /* ============ appraisal scoring ============ */
+  .scorecard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+  .scorecard + .scorecard{margin-top:14px}
+  .sc-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 20px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+  .sc-no{
+    flex:none;min-width:26px;height:26px;padding:0 7px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+    background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:700;letter-spacing:.02em;
+  }
+  .sc-head h3{
+    font-family:"Newsreader",Georgia,serif;font-size:19px;font-weight:600;color:var(--ink);
+    margin:0;letter-spacing:-.015em;line-height:1.25;
+  }
+  .sc-mark{
+    margin-left:auto;flex:none;display:inline-flex;align-items:baseline;gap:5px;
+    border:1px solid var(--line-2);border-radius:999px;padding:3px 13px;background:var(--surface);
+  }
+  .sc-mark b{font-family:"Newsreader",Georgia,serif;font-size:19px;font-weight:600;color:var(--ink-3);line-height:1.1}
+  .sc-mark i{font-style:normal;font-size:11.5px;font-weight:600;color:var(--ink-3)}
+  .sc-mark.part{border-color:color-mix(in srgb,var(--brass) 45%,transparent);background:var(--brass-soft)}
+  .sc-mark.part b{color:var(--brass)}
+  .sc-mark.full{border-color:color-mix(in srgb,var(--ok) 45%,transparent);background:var(--ok-soft)}
+  .sc-mark.full b,.sc-mark.full i{color:var(--ok)}
+  .sc-body{padding:20px 24px}
+  @media (max-width:620px){.sc-body{padding:16px}.sc-head{padding:11px 14px}}
+  .sc-sub{margin:0 0 16px;font-size:13px;color:var(--ink-3)}
+  .sc-part{padding-top:18px;margin-top:18px;border-top:1px solid var(--line)}
+  .sc-part:first-child{padding-top:0;margin-top:0;border-top:0}
+  .sc-part > h4{
+    font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink-2);margin:0 0 4px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  }
+  .sc-part > p{margin:0 0 12px;font-size:12.5px;color:var(--ink-3);line-height:1.45}
+
+  /* mark rows */
+  .mrows{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .mrow{display:flex;align-items:center;gap:14px;padding:9px 14px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .mrow:last-child{border-bottom:0}
+  .mrow:nth-child(even){background:var(--surface-2)}
+  .mrow .ml{flex:1 1 auto;font-size:13px;color:var(--ink-2);line-height:1.4;min-width:0}
+  .mrow .ml i{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3);margin-top:1px}
+  .mrow .mi{flex:none;display:inline-flex;align-items:center;gap:8px}
+  .mrow .mi input{width:78px;text-align:center;font-weight:600;padding:6px 8px}
+  .mrow .mi em{font-style:normal;font-size:11.5px;font-weight:600;color:var(--ink-3);min-width:34px}
+  .mrow .mi b{
+    display:inline-flex;align-items:center;justify-content:center;width:78px;padding:6px 8px;
+    background:var(--brass-soft);border:1px solid color-mix(in srgb,var(--brass) 32%,var(--line-2));
+    border-radius:var(--r);font-size:14px;font-weight:700;color:var(--brass);
+  }
+  .mrow.head{background:var(--surface-3);font-weight:600}
+  .mrow.head .ml{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+  .mrow .chk{flex:none;width:17px;height:17px;margin:0;cursor:pointer}
+  .mrow.pick{cursor:pointer}
+  .mrow.pick:hover{background:var(--accent-soft)}
+  .mrow .cap{flex:none;font-size:11px;font-weight:600;color:var(--ink-3);min-width:52px;text-align:right}
+
+  /* per-course teaching rows */
+  .courserow{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr) minmax(0,1fr);gap:14px 18px;margin-bottom:14px}
+  .courserow.two{grid-template-columns:minmax(0,2.2fr) minmax(0,1fr)}
+  .courserow:last-child{margin-bottom:0}
+  @media (max-width:640px){.courserow,.courserow.two{grid-template-columns:1fr}}
+
+  /* grand total meter */
+  .gt{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface-2);padding:20px 24px;margin-bottom:16px}
+  .gt-top{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+  .gt-score{font-family:"Newsreader",Georgia,serif;font-size:46px;font-weight:600;line-height:1;color:var(--accent);letter-spacing:-.02em}
+  .gt-score span{font-size:20px;color:var(--ink-3)}
+  .gt-note{margin-left:auto;text-align:right;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+  .gt-note b{display:block;font-size:14px}
+  .gt-bar{height:9px;border-radius:5px;background:var(--surface-3);border:1px solid var(--line);overflow:hidden;margin-top:16px;position:relative}
+  .gt-bar i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
+  .gt-bar .mk{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--danger)}
+  .gt-legend{display:flex;justify-content:space-between;gap:12px;margin-top:7px;font-size:11px;color:var(--ink-3)}
+  .verdict{margin-top:16px;border-radius:var(--r);padding:12px 16px;font-size:13.5px;font-weight:500;line-height:1.5}
+  .verdict.ok{border:1px solid color-mix(in srgb,var(--ok) 42%,var(--line));background:var(--ok-soft);color:var(--ok)}
+  .verdict.no{border:1px solid color-mix(in srgb,var(--danger) 42%,var(--line));background:var(--danger-soft);color:var(--danger)}
+
+  /* score ledger table */
+  .ledger{border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .lrow{display:flex;align-items:center;gap:12px;padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;background:var(--surface)}
+  .lrow:last-child{border-bottom:0}
+  .lrow:nth-child(even){background:var(--surface-2)}
+  .lrow .li{flex:none;width:30px;font-weight:700;color:var(--ink-3);font-size:12px}
+  .lrow .lt{flex:1 1 auto;color:var(--ink-2);min-width:0}
+  .lrow .lm{flex:none;width:62px;text-align:right;font-weight:600;color:var(--ink)}
+  .lrow .lx{flex:none;width:52px;text-align:right;color:var(--ink-3);font-size:12px}
+  .lrow.total{background:var(--accent-soft);font-weight:700}
+  .lrow.total .lt,.lrow.total .lm,.lrow.total .lx{color:var(--accent)}
+  .lrow.hdr{background:var(--surface-3)}
+  .lrow.hdr span{font-size:10px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+  .lrow .miss{flex:none;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--danger)}
+
+  /* mandatory gate list */
+  .gate{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+  .gate div{display:flex;gap:10px;align-items:baseline;font-size:13px;color:var(--ink-2)}
+  .gate .mk{flex:none;font-weight:700;width:16px}
+  .gate .yes .mk{color:var(--ok)}
+  .gate .no .mk{color:var(--danger)}
+
+  .filler{
+    font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    border-radius:4px;padding:2px 7px;background:var(--accent-soft);color:var(--accent);flex:none;
+  }
+
   @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important;scroll-behavior:auto !important}}
 
   @media print{
@@ -446,7 +593,20 @@
     .shell{display:block}
     .main{padding:0}
     .page{max-width:none}
-    .card,.entry,.block{break-inside:avoid;box-shadow:none;border-radius:0}
+    .card,.entry,.block,.scorecard,.mrows,.ledger,.gt{break-inside:avoid;box-shadow:none;border-radius:0}
+    .sc-head{background:#fff;border-bottom:1px solid #000;padding:6px 0}
+    .sc-no{background:#000;color:#fff}
+    .sc-body{padding:10px 0}
+    .sc-mark{border:1px solid #000;background:#fff !important}
+    .mrow,.lrow{background:#fff !important;padding:4px 8px}
+    .mrow .mi input{border:0;border-bottom:1px solid #999;width:58px}
+    .mrow .mi b{background:#fff;border:1px solid #000;width:58px}
+    .mrow .chk{-webkit-appearance:checkbox;appearance:checkbox}
+    .gt{background:#fff;border:1px solid #000}
+    .gt-bar{border:1px solid #000}
+    .gt-bar i{background:#000}
+    .verdict{border:1px solid #000 !important;background:#fff !important;color:#000 !important}
+    .lrow.total,.lrow.hdr{background:#fff !important;border-top:1px solid #000}
     input,select,textarea{border:0;border-bottom:1px solid #999;border-radius:0;padding-left:0;background:#fff !important}
     .phead{margin-top:18px;break-after:avoid}
     .phead h2{font-size:20px}
@@ -470,6 +630,370 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
 
+<!-- =========================================================
+     Microsoft Entra ID + SharePoint backend
+     Sign-in, submission, evidence upload and server-side drafts.
+     Everything below is plain JS (no JSX) so Babel never touches it.
+     ========================================================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/msal-browser/3.28.1/msal-browser.min.js"></script>
+<script>
+/* ---------------------------------------------------------
+   1. CONFIGURATION  —  the only part the SDC has to edit.
+
+   Fill these in from backend/ENTRA-SETUP.md once the tenant
+   admin has registered the app and the SharePoint site exists.
+   While any value still reads PASTE_..., the form runs exactly
+   as it did before: local drafts, print and export, no network.
+   --------------------------------------------------------- */
+window.PBAS_CONFIG = {
+  tenantId : "PASTE_TENANT_ID",
+  clientId : "PASTE_CLIENT_ID",
+  siteId   : "PASTE_SITE_ID",     // hostname,siteCollectionId,webId
+  listId   : "PASTE_LIST_ID",     // the "PBAS Submissions" list
+  driveId  : "PASTE_DRIVE_ID",    // the "PBAS Evidence" document library
+  allowedDomain : "gcet.edu.in",
+  cycle         : "2025-26",
+  evidenceRoot  : "PBAS 2025-26",
+  draftFile     : "pbas-draft-2025-26.json"
+};
+
+(function(){
+  "use strict";
+
+  var CFG = window.PBAS_CONFIG;
+  var GRAPH = "https://graph.microsoft.com/v1.0";
+
+  /* Scopes.
+     Files.ReadWrite.AppFolder keeps each faculty member's draft in their own
+     OneDrive, in a folder only this app can see — no admin consent needed.
+     Sites.ReadWrite.All is what writes the submission and the certificates,
+     and it does need admin consent. */
+  var SCOPES = ["User.Read", "Sites.ReadWrite.All", "Files.ReadWrite.AppFolder"];
+
+  function unset(v){ return !v || String(v).indexOf("PASTE_") === 0; }
+
+  var configured = !unset(CFG.tenantId) && !unset(CFG.clientId) &&
+                   !unset(CFG.siteId)   && !unset(CFG.listId)   && !unset(CFG.driveId);
+
+  var missing = ["tenantId","clientId","siteId","listId","driveId"].filter(function(k){ return unset(CFG[k]); });
+
+  var msalReady = typeof msal !== "undefined";
+  var pca = null, account = null, initErr = null;
+
+  /* ---------- helpers ---------- */
+
+  function err(message, detail){
+    var e = new Error(message);
+    e.detail = detail;
+    return e;
+  }
+
+  /* SharePoint rejects these in file and folder names, and trims trailing dots. */
+  function safeName(s, fallback){
+    var out = String(s == null ? "" : s)
+      .replace(/[~"#%&*:<>?\/\\{|}]+/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/^[.\s]+|[.\s]+$/g, "")
+      .slice(0, 120);
+    return out || (fallback || "unnamed");
+  }
+
+  function encodePath(path){
+    return path.split("/").map(encodeURIComponent).join("/");
+  }
+
+  /* ---------- auth ---------- */
+
+  function init(){
+    if(initErr) return Promise.reject(initErr);
+    if(pca) return Promise.resolve(pca);
+    if(!configured){
+      initErr = err("The backend is not configured yet. Still to fill in: " + missing.join(", ") + ".");
+      return Promise.reject(initErr);
+    }
+    if(!msalReady){
+      initErr = err("The Microsoft sign-in library did not load. Check the network connection and reload the page.");
+      return Promise.reject(initErr);
+    }
+    pca = new msal.PublicClientApplication({
+      auth: {
+        clientId: CFG.clientId,
+        authority: "https://login.microsoftonline.com/" + CFG.tenantId,
+        redirectUri: window.location.origin + window.location.pathname
+      },
+      cache: { cacheLocation: "localStorage", storeAuthStateInCookie: false }
+    });
+    return pca.initialize().then(function(){
+      return pca.handleRedirectPromise();
+    }).then(function(res){
+      if(res && res.account) account = res.account;
+      else {
+        var all = pca.getAllAccounts();
+        if(all.length) account = all[0];
+      }
+      if(account) pca.setActiveAccount(account);
+      return pca;
+    });
+  }
+
+  function emailOf(acc){
+    if(!acc) return "";
+    return String(acc.username || (acc.idTokenClaims && (acc.idTokenClaims.preferred_username || acc.idTokenClaims.email)) || "").toLowerCase();
+  }
+
+  function checkDomain(acc){
+    var mail = emailOf(acc);
+    var dom = String(CFG.allowedDomain || "").toLowerCase();
+    if(dom && mail.slice(-(dom.length + 1)) !== "@" + dom){
+      return err("Signed in as " + (mail || "an unknown account") + ". This form only accepts @" + dom + " accounts.");
+    }
+    return null;
+  }
+
+  function signIn(){
+    return init().then(function(){
+      return pca.loginPopup({ scopes: SCOPES, prompt: "select_account" });
+    }).then(function(res){
+      var bad = checkDomain(res.account);
+      if(bad){
+        return pca.logoutPopup({ account: res.account }).catch(function(){}).then(function(){
+          account = null;
+          throw bad;
+        });
+      }
+      account = res.account;
+      pca.setActiveAccount(account);
+      return account;
+    });
+  }
+
+  function signOut(){
+    if(!pca || !account) { account = null; return Promise.resolve(); }
+    var a = account;
+    account = null;
+    return pca.logoutPopup({ account: a }).catch(function(){});
+  }
+
+  function token(){
+    return init().then(function(){
+      if(!account) throw err("Sign in with your @" + CFG.allowedDomain + " account first.");
+      return pca.acquireTokenSilent({ scopes: SCOPES, account: account })
+        .catch(function(e){
+          if(typeof msal !== "undefined" && e instanceof msal.InteractionRequiredAuthError)
+            return pca.acquireTokenPopup({ scopes: SCOPES, account: account });
+          throw e;
+        });
+    }).then(function(r){ return r.accessToken; });
+  }
+
+  /* ---------- Graph ---------- */
+
+  function graph(path, opts){
+    opts = opts || {};
+    return token().then(function(tok){
+      var headers = opts.headers || {};
+      headers.Authorization = "Bearer " + tok;
+      if(opts.json !== undefined){
+        headers["Content-Type"] = "application/json";
+        opts.body = JSON.stringify(opts.json);
+      }
+      return fetch(path.indexOf("http") === 0 ? path : GRAPH + path, {
+        method: opts.method || "GET",
+        headers: headers,
+        body: opts.body
+      });
+    }).then(function(res){
+      if(res.status === 204) return null;
+      return res.text().then(function(text){
+        var data = null;
+        try { data = text ? JSON.parse(text) : null; } catch(e){ data = { raw: text }; }
+        if(!res.ok){
+          var m = (data && data.error && data.error.message) || res.statusText || ("HTTP " + res.status);
+          if(res.status === 403)
+            m = "Microsoft refused the request (403). The most likely cause is that the tenant admin has not granted consent for Sites.ReadWrite.All, or this account has no write access to the PBAS site. Details: " + m;
+          if(res.status === 404)
+            m = "Not found (404) — check siteId, listId and driveId in PBAS_CONFIG. Details: " + m;
+          throw err(m, { status: res.status, body: data });
+        }
+        return data;
+      });
+    });
+  }
+
+  /* ---------- evidence library ---------- */
+
+  /* Create each level in turn. A folder that already exists comes back 409,
+     which is the expected case on every submission after the first. */
+  function ensureFolder(segments){
+    var made = Promise.resolve();
+    segments.forEach(function(seg, i){
+      made = made.then(function(){
+        var parent = segments.slice(0, i).join("/");
+        var url = parent
+          ? "/drives/" + CFG.driveId + "/root:/" + encodePath(parent) + ":/children"
+          : "/drives/" + CFG.driveId + "/root/children";
+        return graph(url, {
+          method: "POST",
+          json: { name: seg, folder: {}, "@microsoft.graph.conflictBehavior": "fail" }
+        }).catch(function(e){
+          if(e.detail && e.detail.status === 409) return null;  /* already there */
+          throw e;
+        });
+      });
+    });
+    return made.then(function(){ return segments.join("/"); });
+  }
+
+  function uploadFile(folderPath, name, blob){
+    var path = folderPath + "/" + name;
+    return graph("/drives/" + CFG.driveId + "/root:/" + encodePath(path) + ":/content?@microsoft.graph.conflictBehavior=replace", {
+      method: "PUT",
+      headers: { "Content-Type": blob.type || "application/octet-stream" },
+      body: blob
+    });
+  }
+
+  /* ---------- submit ---------- */
+
+  /* payload  the JSON the form already builds for Export
+     files    [{name, file}] — one per attached certificate
+     onStep   (done, total, label) => void, for the progress line
+  */
+  function submit(payload, files, onStep){
+    files = files || [];
+    var step = onStep || function(){};
+    var p = payload.profile || {};
+    var folderName = safeName((p.empid || "no-id") + " - " + (p.name || "unnamed"), "unnamed");
+    var segments = [CFG.evidenceRoot, safeName(p.dept, "Unspecified department"), folderName];
+    var total = files.length + 3;
+    var done = 0;
+    var tick = function(label){ done++; step(done, total, label); };
+    var folderPath, uploaded = [], failed = [];
+
+    step(0, total, "Preparing");
+
+    return ensureFolder(segments).then(function(fp){
+      folderPath = fp;
+      tick("Evidence folder ready");
+
+      /* Certificates, one at a time — a burst of parallel PUTs to the same
+         new folder is what makes Graph start returning 429. */
+      var chain = Promise.resolve();
+      files.forEach(function(f, i){
+        chain = chain.then(function(){
+          var nm = safeName(f.name, "document-" + (i + 1));
+          return uploadFile(folderPath, nm, f.file).then(function(item){
+            uploaded.push({ name: nm, url: item && item.webUrl, size: f.file.size, slot: f.slot || null });
+            tick(nm);
+          }).catch(function(e){
+            failed.push({ name: nm, reason: e.message });
+            tick(nm + " — failed");
+          });
+        });
+      });
+      return chain;
+    }).then(function(){
+      /* The full form, verbatim, next to the certificates it refers to. */
+      var full = JSON.parse(JSON.stringify(payload));
+      full.evidence = uploaded;
+      full.evidenceFailed = failed;
+      full.submittedBy = emailOf(account);
+      full.submittedOn = new Date().toISOString();
+      full.cycle = CFG.cycle;
+      var blob = new Blob([JSON.stringify(full, null, 2)], { type: "application/json" });
+      return uploadFile(folderPath, "submission.json", blob).then(function(item){
+        tick("Form data saved");
+        return { full: full, jsonUrl: item && item.webUrl };
+      });
+    }).then(function(ctx){
+      /* The list row is what the SDC dashboard reads. The heavy detail
+         stays in submission.json; this is the index over it. */
+      var sc = payload.scores || {};
+      var fields = {
+        Title        : p.name || emailOf(account),
+        EmployeeID   : String(p.empid || ""),
+        Department   : p.dept || "",
+        Designation  : p.designation || "",
+        Cycle        : CFG.cycle,
+        GrandTotal   : Number(sc.grandTotal || 0),
+        MinimumRequired : Number(sc.minimumRequired || 0),
+        Eligible     : !!sc.eligibleForIncrement,
+        SubmittedBy  : emailOf(account),
+        SubmittedOn  : new Date().toISOString(),
+        EvidenceCount: uploaded.length,
+        EvidenceFolder: ctx.jsonUrl || "",
+        Status       : "Submitted"
+      };
+      return graph("/sites/" + CFG.siteId + "/lists/" + CFG.listId + "/items", {
+        method: "POST",
+        json: { fields: fields }
+      }).then(function(item){
+        tick("Submission recorded");
+        return {
+          itemId: item && item.id,
+          folderPath: folderPath,
+          jsonUrl: ctx.jsonUrl,
+          uploaded: uploaded.length,
+          failed: failed
+        };
+      });
+    });
+  }
+
+  /* ---------- server-side drafts ----------
+     The app folder in the signed-in user's own OneDrive. Private to them,
+     private to this app, and it needs no admin consent. */
+
+  function draftPath(){
+    return "/me/drive/special/approot:/" + encodeURIComponent(CFG.draftFile);
+  }
+
+  function saveDraft(draft){
+    var body = new Blob([JSON.stringify({ savedAt: new Date().toISOString(), cycle: CFG.cycle, data: draft })],
+                        { type: "application/json" });
+    return graph(draftPath() + ":/content", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: body
+    }).then(function(item){ return item && item.lastModifiedDateTime; });
+  }
+
+  function loadDraft(){
+    return graph(draftPath() + ":/content").then(function(d){
+      if(!d || !d.data) return null;
+      return d;
+    }).catch(function(e){
+      if(e.detail && e.detail.status === 404) return null;   /* nothing saved yet */
+      throw e;
+    });
+  }
+
+  function deleteDraft(){
+    return graph(draftPath(), { method: "DELETE" }).catch(function(e){
+      if(e.detail && e.detail.status === 404) return null;
+      throw e;
+    });
+  }
+
+  /* ---------- public surface ---------- */
+  window.PBAS = {
+    configured   : configured,
+    missing      : missing,
+    allowedDomain: CFG.allowedDomain,
+    init         : init,
+    signIn       : signIn,
+    signOut      : signOut,
+    account      : function(){ return account; },
+    email        : function(){ return emailOf(account); },
+    displayName  : function(){ return account ? (account.name || emailOf(account)) : ""; },
+    submit       : submit,
+    saveDraft    : saveDraft,
+    loadDraft    : loadDraft,
+    deleteDraft  : deleteDraft
+  };
+})();
+</script>
+
 <script type="text/babel" data-presets="react">
 const {useState, useEffect, useMemo, useRef, useCallback} = React;
 
@@ -483,7 +1007,7 @@ const DEPARTMENTS = [
   "Mechanical Engineering (ME)","Civil Engineering (CE)","Master of Business Administration (MBA)",
   "Humanities & Sciences (H&S)","Physical Education","Other"
 ];
-const DESIGNATIONS = ["Dean","Professor & Head","Professor","Associate Professor","Assistant Professor","Programmer","Lab Assistant","Technical / Supporting Staff","Other"];
+const DESIGNATIONS = ["Dean","Professor & Head","Professor","Associate Professor","Senior Assistant Professor","Assistant Professor","Programmer","Lab Assistant","Technical / Supporting Staff","Other"];
 const PUBLISHERS = [
   "SCI","Scopus","Web of Science","IEEE Transactions","SCIE","ESCI","UGC-CARE",
   "IEEE","Springer","Elsevier","Wiley","Taylor & Francis","Sage","MDPI","ACM","Inderscience","IOP / AIP","Other"
@@ -503,16 +1027,119 @@ const FDPROLE    = ["Participant","Organizer","Resource person"];
 const FDPMODE    = ["Online","Offline","Hybrid"];
 const COURSEKIND = ["NPTEL","MOOCs / Certification"];
 const AWARDLEVEL = ["Institute","University","State","National","International"];
+const MOOCRESULT = ["Elite + Gold","Elite + Silver","Elite","Successfully completed","Pass","Ongoing"];
+const PUBTIER    = ["International publisher (McGraw Hill, Pearson, etc.)","National publisher","Other"];
+const RESROLE    = ["Resource person in an FDP","Chairing a session in an International Conference","Keynote / invited speaker"];
+const FUNDERS    = ["UGC","DST","AICTE","DRDO","DBT","CSIR","SERB","ISRO","MeitY","TSCOST","Industry","Other agency"];
+const PROJROLE   = ["Principal Investigator","Co-Principal Investigator","Team member"];
 const YEARS = (() => { const y = new Date().getFullYear(), a = []; for(let i = y + 1; i >= y - 15; i--) a.push(String(i)); return a; })();
+
+/* =========================================================
+   Official rubric — GCET Faculty Performance Appraisal Form
+   16 items, 1000 marks. Every maximum below is taken
+   verbatim from the printed form.
+   ========================================================= */
+const MAX = {
+  i1:150, i1a:10, i1b:20, i1c:60, i1d:10, i1e:30, i1f:20,
+  i2:50,  i2a:10, i2b:10, i2c:5,  i2d:20, i2e:5,  i2fa:40, i2fb:10,
+  i3:100, i4:50,  i5:50,  i6:25,  i7:50,  i8:50,  i9:200, i10:50, i11:25,
+  i12:35, i12a:25, i12b:10,
+  i13:40, i14:50, i15:50, i16:25,
+  total:1000
+};
+
+/* Minimum overall score required for sanction of increment. */
+const MIN_REQUIRED = [
+  {d:"Assistant Professor",        m:500},
+  {d:"Senior Assistant Professor", m:550},
+  {d:"Associate Professor",        m:600},
+  {d:"Professor",                  m:650}
+];
+const minFor = desig =>
+  desig === "Professor" || desig === "Professor & Head" || desig === "Dean" ? 650 :
+  desig === "Associate Professor" ? 600 :
+  desig === "Senior Assistant Professor" ? 550 :
+  desig === "Assistant Professor" ? 500 : 0;
+
+/* Item 1.a — minimum contact hours per theory course (3-credit). */
+const MIN_HOURS = 40;
+
+/* Item 1.e — pass percentage of theory courses. */
+const resultMark = p => p > 95 ? 30 : p > 90 ? 25 : p > 85 ? 20 : p > 80 ? 15 : p > 75 ? 10 : p >= 65 ? 5 : 0;
+/* Item 8 — consultancy receipts, in rupees. */
+const consultMark = a => a >= 200000 ? 50 : a >= 150000 ? 40 : a >= 100000 ? 25 : a > 50000 ? 10 : 0;
+/* Item 12 — students ratings on TLP, on a 5-point scale. */
+const feedbackMark = f => f >= 4.5 ? 25 : f >= 4 ? 20 : f >= 3.5 ? 15 : f >= 3 ? 10 : f >= 2.5 ? 5 : 0;
+const cesMark      = f => f >= 4.5 ? 10 : f >= 4 ? 8  : f >= 3.5 ? 6  : f >= 3 ? 4  : f >= 2.5 ? 2 : 0;
+/* Item 7 — sponsored research projects secured in the year. */
+const sponsoredMark = k => k >= 2 ? 25 : k === 1 ? 15 : 0;
+
+/* Item 9 — students supervision for research and allied academic activities. */
+const SUPERVISION = [
+  {k:"a", l:"Hackathon in MHRD — participation in the final round",                   base:200, prize:200},
+  {k:"b", l:"Project Exhibition (participation) — IIT / IIIT / BITS Hyderabad / NIT", base:100, prize:125},
+  {k:"c", l:"Paper presentation — IIT / IIIT / BITS Hyderabad / NIT",                 base:75,  prize:100},
+  {k:"d", l:"Poster presentation — IIT / IIIT / BITS Hyderabad / NIT",                base:50,  prize:75},
+  {k:"e", l:"Paper / Poster / Project presentation in other reputed institutions",    base:75,  prize:75}
+];
+const SUPCATS = SUPERVISION.map(s => s.l);
+
+/* Item 10 — educational administration assignments (department / college). */
+const ADMIN_ROLES = [
+  {k:"prog",   l:"Program Coordinator (if other than Head)", m:50},
+  {k:"course", l:"Course coordinator",                       m:25},
+  {k:"class",  l:"Class In-charge",                          m:25},
+  {k:"tt",     l:"Time table coordinator",                   m:25},
+  {k:"lab",    l:"Lab In-charge",                            m:25},
+  {k:"crc",    l:"Member, CRC",                              m:25},
+  {k:"iqac",   l:"Member, IQAC",                             m:25},
+  {k:"news",   l:"News letter In-charge",                    m:25},
+  {k:"mag",    l:"Magazine In-charge",                       m:25},
+  {k:"body",   l:"Professional body In-charge",              m:25},
+  {k:"other",  l:"Any other administrative responsibility",  m:25}
+];
+
+/* Item 11 — organization of educational / co-curricular activities. */
+const ORG_ACTIVITIES = [
+  {k:"sdp",   l:"Student Development Program",  m:5},
+  {k:"fdp",   l:"Faculty Development Program",  m:10},
+  {k:"ind",   l:"Internships / Guest Lectures / Industrial Visits / Mini Project / Technical Seminar / Project Exhibition / Hackathon / Incubation cell / JHUB", m:10},
+  {k:"extra", l:"Extra-curricular activities",  m:10},
+  {k:"conf",  l:"Conference",                   m:25}
+];
+
+/* Item 14 — Group Head rating. */
+const GH_RATING = [
+  {k:"learn", l:"Willingness to learn",            m:15},
+  {k:"init",  l:"Initiative and drive",            m:5},
+  {k:"creat", l:"Creativity and innovation",       m:5},
+  {k:"time",  l:"Adhering to timings",             m:5},
+  {k:"coop",  l:"Cooperation with other members",  m:5},
+  {k:"qual",  l:"Quality of work carried out",     m:15}
+];
+
+/* Item 15 — HoD rating. */
+const HOD_RATING = [
+  {k:"reg",    l:"Regularity",                       m:5},
+  {k:"punc",   l:"Punctuality",                      m:5},
+  {k:"tml",    l:"Adherence to timelines",           m:10},
+  {k:"qual",   l:"Quality of work",                  m:10},
+  {k:"etiq",   l:"Etiquette",                        m:5},
+  {k:"init",   l:"Initiative and drive",             m:5},
+  {k:"creat",  l:"Creativity and innovation",        m:5},
+  {k:"inter",  l:"Interpersonal skills",             m:5},
+  {k:"extra",  l:"Travelling an extra mile",         m:10},
+  {k:"uncert", l:"Ability to cope with uncertainty", m:5}
+];
 
 /* Evidence groups. Row count comes from the declared count, one document per row. */
 const SPECS = [
-  { id:"journal", label:"Journal publications", item:"10", page:"research", groupField:"indexed_by",
+  { id:"journal", label:"Journal publications", item:"3.a / 3.b", page:"research", groupField:"indexed_by",
     groups:[ {k:"SCI",c:"j_sci"}, {k:"Scopus",c:"j_scopus"}, {k:"Web of Science",c:"j_wos"}, {k:"IEEE Transactions",c:"j_ieee"} ],
     fields:[
       {k:"title",        l:"Paper title",            t:"text",   wide:true, ph:"Title of the paper"},
       {k:"journal",      l:"Journal name",           t:"text",   ph:"Name of the journal"},
-      {k:"published_in", l:"Publication",             t:"select", o:PUBLISHERS},
+      {k:"published_in", l:"Publication",            t:"select", o:PUBLISHERS},
       {k:"indexed_by",   l:"Indexed by",             t:"select", o:INDEXERS},
       {k:"author_pos",   l:"Author position",        t:"select", o:AUTHORPOS},
       {k:"pub_my",       l:"Published month & year", t:"select", o:CYCLE_MONTHS},
@@ -520,7 +1147,7 @@ const SPECS = [
       {k:"doi",          l:"DOI",                    t:"text",   ph:"10.xxxx/xxxxx"},
       {k:"link",         l:"Paper link",             t:"url",    wide:true, ph:"https://"}
     ] },
-  { id:"conference", label:"Conference publications", item:"11", page:"research", groupField:"organized_by",
+  { id:"conference", label:"Conference publications", item:"3", page:"research", groupField:"organized_by",
     groups:[ {k:"IEEE",c:"c_ieee"}, {k:"Springer",c:"c_springer"} ],
     fields:[
       {k:"title",        l:"Paper title",             t:"text",   wide:true, ph:"Title of the paper"},
@@ -532,7 +1159,24 @@ const SPECS = [
       {k:"doi",          l:"DOI",                     t:"text",   ph:"10.xxxx/xxxxx"},
       {k:"link",         l:"Link",                    t:"url",    ph:"https://"}
     ] },
-  { id:"patent", label:"Patents", item:"16", page:"research", groupField:"category",
+  { id:"book", label:"Text books authored", item:"3.c", page:"research",
+    groups:[ {k:"",c:"b_books"} ],
+    fields:[
+      {k:"title",          l:"Title of the book",  t:"text",   wide:true, ph:"Title of the book"},
+      {k:"author_pos",     l:"Author position",    t:"select", o:AUTHORPOS},
+      {k:"publisher",      l:"Publisher details",  t:"text",   ph:"Publisher, edition, ISBN"},
+      {k:"publisher_tier", l:"Publisher category", t:"select", o:PUBTIER},
+      {k:"link",           l:"Link",               t:"url",    ph:"https://"}
+    ] },
+  { id:"chapter", label:"Book chapters", item:"3", page:"research",
+    groups:[ {k:"",c:"b_chapters"} ],
+    fields:[
+      {k:"title",      l:"Title of the book chapter", t:"text",   wide:true, ph:"Title of the chapter"},
+      {k:"author_pos", l:"Author position",           t:"select", o:AUTHORPOS},
+      {k:"publisher",  l:"Publisher details",         t:"text",   ph:"Book title, publisher, ISBN"},
+      {k:"link",       l:"Link",                      t:"url",    ph:"https://"}
+    ] },
+  { id:"patent", label:"Patents", item:"3", page:"research", groupField:"category",
     groups:[ {k:"Utility",c:"p_utility"}, {k:"Design",c:"p_design"} ],
     fields:[
       {k:"title",       l:"Patent title",                         t:"text",   wide:true, ph:"Title of the patent"},
@@ -543,23 +1187,26 @@ const SPECS = [
       {k:"prototype",   l:"Published / converted into prototype", t:"select", o:YESNO},
       {k:"link",        l:"Link",                                 t:"url",    wide:true, ph:"https://"}
     ] },
-  { id:"book", label:"Books authored", item:"14", page:"research",
-    groups:[ {k:"",c:"b_books"} ],
+  { id:"nptel", label:"MOOCs through SWAYAM / NPTEL", item:"4", page:"development", groupField:"kind",
+    groups:[ {k:"NPTEL",c:"d_nptel"}, {k:"MOOCs / Certification",c:"d_certs"} ],
     fields:[
-      {k:"title",      l:"Title of the book", t:"text",   wide:true, ph:"Title of the book"},
-      {k:"author_pos", l:"Author position",   t:"select", o:AUTHORPOS},
-      {k:"publisher",  l:"Publisher details", t:"text",   ph:"Publisher, edition, ISBN"},
-      {k:"link",       l:"Link",              t:"url",    ph:"https://"}
+      {k:"title",  l:"Title of certification or course", t:"text",   wide:true, ph:"Title of the course"},
+      {k:"kind",   l:"NPTEL / SWAYAM or MOOCs",          t:"select", o:COURSEKIND},
+      {k:"weeks",  l:"No. of weeks",                     t:"number"},
+      {k:"result", l:"Result on qualifying",             t:"select", o:MOOCRESULT}
     ] },
-  { id:"chapter", label:"Book chapters", item:"15", page:"research",
-    groups:[ {k:"",c:"b_chapters"} ],
+  { id:"resource", label:"Resource person in FDP / Chairing international conferences", item:"5", page:"development",
+    groups:[ {k:"",c:"r_resource"} ],
     fields:[
-      {k:"title",      l:"Title of the book chapter", t:"text",   wide:true, ph:"Title of the chapter"},
-      {k:"author_pos", l:"Author position",           t:"select", o:AUTHORPOS},
-      {k:"publisher",  l:"Publisher details",         t:"text",   ph:"Book title, publisher, ISBN"},
-      {k:"link",       l:"Link",                      t:"url",    ph:"https://"}
+      {k:"title", l:"Programme or conference",  t:"text",   wide:true, ph:"Title of the FDP or conference"},
+      {k:"role",  l:"Role",                     t:"select", o:RESROLE},
+      {k:"host",  l:"University / institution", t:"text",   ph:"University or highly reputed institution"},
+      {k:"place", l:"Place",                    t:"text",   ph:"City, country"},
+      {k:"from",  l:"From",                     t:"date"},
+      {k:"to",    l:"To",                       t:"date"},
+      {k:"link",  l:"Link",                     t:"url",    wide:true, ph:"https://"}
     ] },
-  { id:"fdp", label:"Faculty Development Programmes", item:"12", page:"development",
+  { id:"fdp", label:"Faculty Development Programmes attended", item:"6", page:"development",
     groups:[ {k:"",c:"d_fdp"} ],
     fields:[
       {k:"title", l:"Title of the FDP",         t:"text",   wide:true, ph:"Title of the programme"},
@@ -571,27 +1218,55 @@ const SPECS = [
       {k:"to",    l:"To",                       t:"date"},
       {k:"link",  l:"Link",                     t:"url",    wide:true, ph:"https://"}
     ] },
-  { id:"nptel", label:"NPTEL / MOOCs", item:"13", page:"development", groupField:"kind",
-    groups:[ {k:"NPTEL",c:"d_nptel"}, {k:"MOOCs / Certification",c:"d_certs"} ],
+  { id:"sponsored", label:"Sponsored research projects secured", item:"7", page:"projects",
+    groups:[ {k:"",c:"sp_projects"} ],
     fields:[
-      {k:"title", l:"Title of certification or course", t:"text",   wide:true, ph:"Title of the course"},
-      {k:"kind",  l:"NPTEL or MOOCs",                   t:"select", o:COURSEKIND},
-      {k:"weeks", l:"No. of weeks",                     t:"number"}
+      {k:"title",  l:"Title of the project",    t:"text",   wide:true, ph:"Title of the sanctioned project"},
+      {k:"agency", l:"Funding agency",          t:"select", o:FUNDERS},
+      {k:"role",   l:"Role in the project",     t:"select", o:PROJROLE},
+      {k:"amount", l:"Sanctioned amount (Rs.)", t:"number"},
+      {k:"order",  l:"Sanction order number",   t:"text",   ph:"As on the sanction letter"},
+      {k:"date",   l:"Date of sanction",        t:"date"},
+      {k:"months", l:"Duration (months)",       t:"number"}
+    ] },
+  { id:"consultancy", label:"Consultancy activities", item:"8", page:"projects",
+    groups:[ {k:"",c:"cn_jobs"} ],
+    fields:[
+      {k:"title",  l:"Nature of the consultancy", t:"text",   wide:true, ph:"Scope of the work"},
+      {k:"client", l:"Client / organisation",     t:"text",   ph:"Name of the client"},
+      {k:"amount", l:"Amount received (Rs.)",     t:"number"},
+      {k:"order",  l:"Work order number",         t:"text"},
+      {k:"date",   l:"Date of receipt",           t:"date"}
+    ] },
+  { id:"supervision", label:"Students supervision — competitions, exhibitions & contests", item:"9", page:"supervision",
+    groups:[ {k:"",c:"sv_events"} ],
+    fields:[
+      {k:"title",    l:"Name of the event",            t:"text",   wide:true, ph:"e.g. Smart India Hackathon 2025"},
+      {k:"category", l:"Category (decides the marks)", t:"select", o:SUPCATS, wide:true},
+      {k:"host",     l:"Host institution",             t:"text",   ph:"IIT / IIIT / BITS Hyderabad / NIT / other"},
+      {k:"prize",    l:"Won a prize",                  t:"select", o:YESNO},
+      {k:"team",     l:"No. of students supervised",   t:"number"},
+      {k:"date",     l:"Date of the event",            t:"date"}
     ] }
 ];
 
 const PAGES = [
-  {id:"profile",     k:"A", label:"Faculty Profile"},
-  {id:"load",        k:"B", label:"Teaching Load"},
-  {id:"research",    k:"C", label:"Research & Publications"},
-  {id:"development", k:"D", label:"Professional Development"},
-  {id:"roles",       k:"E", label:"Recognition & Roles"},
-  {id:"documents",   k:"F", label:"Documents"},
-  {id:"declaration", k:"G", label:"Declaration & Submit"}
+  {id:"profile",        k:"A", label:"Faculty Profile",          eye:"Identity & experience"},
+  {id:"teaching",       k:"B", label:"Classroom Teaching",       eye:"Item 1 · 150 marks"},
+  {id:"mentoring",      k:"C", label:"Mentoring",                eye:"Item 2 · 50 marks"},
+  {id:"research",       k:"D", label:"Research & Publications",  eye:"Item 3 · 100 marks"},
+  {id:"development",    k:"E", label:"Professional Development", eye:"Items 4 – 6 · 125 marks"},
+  {id:"projects",       k:"F", label:"Projects & Consultancy",   eye:"Items 7, 8, 13 · 140 marks"},
+  {id:"supervision",    k:"G", label:"Supervision & Events",     eye:"Items 9, 11 · 225 marks"},
+  {id:"administration", k:"H", label:"Administration & Roles",   eye:"Item 10 · 50 marks"},
+  {id:"ratings",        k:"I", label:"Ratings & Feedback",       eye:"Items 12, 14 – 16 · 160 marks"},
+  {id:"documents",      k:"J", label:"Documents",                eye:"Supporting evidence"},
+  {id:"declaration",    k:"K", label:"Score Summary & Submit",   eye:"Grand total · 1000 marks"}
 ];
 
-const COUNT_KEYS = ["j_sci","j_scopus","j_wos","j_ieee","c_ieee","c_springer","p_utility","p_design","b_books","b_chapters","d_fdp","d_nptel","d_certs"];
-const STORAGE = "gcet-pbas-react-2025-26";
+const COUNT_KEYS = ["j_sci","j_scopus","j_wos","j_ieee","c_ieee","c_springer","p_utility","p_design","b_books","b_chapters",
+                    "d_fdp","d_nptel","d_certs","r_resource","sp_projects","cn_jobs","sv_events"];
+const STORAGE = "gcet-pbas-react-2025-26-v2";
 const MAX_MB = 5;
 
 /* =========================================================
@@ -620,12 +1295,197 @@ const blankState = () => ({
   load:{},
   counts:COUNT_KEYS.reduce((a,k)=>(a[k]="",a),{credits:""}),
   data:{},
+
+  /* item 1 — classroom teaching */
+  teaching:{
+    b_note:"", b_marks:"",
+    c_title:"", c_hours:"", c_cases:"", c_event:"", c_venue:"", c_date:"", c_outcome:"", c_marks:"",
+    d_note:"", d_marks:"",
+    f_date:"", f_by:"", f_marks:""
+  },
+  /* item 2 — student / faculty mentoring */
+  mentoring:{
+    mode:"", mentees:"", note:"",
+    a_marks:"", b_marks:"", c_marks:"", d_marks:"", e_marks:"",
+    fa_marks:"", fb_marks:""
+  },
+  /* item 11 — organization of educational / co-curricular activities */
+  events:ORG_ACTIVITIES.reduce((a,x)=>(a[x.k]="",a),{}),
+  /* item 10 — educational administration assignments */
+  admin:ADMIN_ROLES.reduce((a,x)=>(a[x.k]=false,a),{}),
+  adminNote:"",
+  /* marks the HoD may award above the printed sub-bands */
+  awarded:{i7:""},
+  /* item 13 — internal seed funding */
+  seed:{title:"", amount:"", order:"", date:"", status:""},
+  /* items 12, 14, 15, 16 — ratings */
+  ratings:Object.assign(
+    {feedback:"", ces:"", hoi:"", hoi_by:"", gh_by:"", hod_by:""},
+    GH_RATING.reduce((a,x)=>(a["gh_"+x.k]="",a),{}),
+    HOD_RATING.reduce((a,x)=>(a["hod_"+x.k]="",a),{})
+  ),
+
   awards:[],
   roles:[{id:uid(),role:"",nature:""}],
   docs:[],
   remarks:"",
   declaration:false
 });
+
+/* =========================================================
+   Scoring — the printed form, item by item.
+   Objective bands are computed; the subjective components
+   are the marks awarded by the observer, HoD, Group Head
+   or Head of the Institution.
+   ========================================================= */
+const mk = (v, max) => Math.max(0, Math.min(max, Math.round(n(v))));
+
+function theoryCourses(load){
+  const out = [];
+  ["s1","s2"].forEach(s => [1,2,3].forEach(i => {
+    const title = String(load[`${s}_sub${i}`] || "").trim();
+    if(title) out.push({
+      sem:s === "s1" ? "Semester I" : "Semester II",
+      title,
+      hours:n(load[`${s}_sub${i}_hrs`]),
+      pass:n(load[`${s}_sub${i}_pass`])
+    });
+  }));
+  return out;
+}
+
+function computeScores(state, slotsBySpec){
+  const c = state.counts, t = state.teaching, m = state.mentoring, r = state.ratings;
+  const rows = id => (slotsBySpec[id] || []).map(sl => state.data[sl.key] || {});
+
+  /* ---- 1. Classroom teaching (150) ---- */
+  const courses = theoryCourses(state.load);
+  const metHours = courses.filter(x => x.hours >= MIN_HOURS).length;
+  const i1a = courses.length ? Math.round(MAX.i1a * metHours / courses.length) : 0;
+  const graded = courses.filter(x => x.pass > 0);
+  const avgPass = graded.length ? graded.reduce((a,x) => a + x.pass, 0) / graded.length : 0;
+  const i1e = resultMark(avgPass);
+  const i1b = mk(t.b_marks, MAX.i1b), i1c = mk(t.c_marks, MAX.i1c);
+  const i1d = mk(t.d_marks, MAX.i1d), i1f = mk(t.f_marks, MAX.i1f);
+  const i1 = Math.min(MAX.i1, i1a + i1b + i1c + i1d + i1e + i1f);
+
+  /* ---- 2. Mentoring (50) ---- */
+  const facultyTrack = mentorMode(state) === "faculty";
+  const i2 = facultyTrack
+    ? Math.min(MAX.i2, mk(m.fa_marks, MAX.i2fa) + mk(m.fb_marks, MAX.i2fb))
+    : Math.min(MAX.i2, mk(m.a_marks, MAX.i2a) + mk(m.b_marks, MAX.i2b) + mk(m.c_marks, MAX.i2c)
+                     + mk(m.d_marks, MAX.i2d) + mk(m.e_marks, MAX.i2e));
+
+  /* ---- 3. Research publications (100) ---- */
+  const nSci   = cnt(c.j_sci);
+  const nSwos  = cnt(c.j_scopus) + cnt(c.j_wos) + cnt(c.j_ieee);
+  const nTexts = rows("book").filter(b => b.publisher_tier === PUBTIER[0]).length;
+  const i3 = Math.min(MAX.i3, nSci * 100 + nSwos * 50 + nTexts * 100);
+
+  /* ---- 4. MOOCs through SWAYAM / NPTEL (50) ---- */
+  const nMooc = cnt(c.d_nptel);
+  const i4 = nMooc >= 1 ? MAX.i4 : 0;
+
+  /* ---- 5. Resource person / chairing international conferences (50) ---- */
+  const nRes = cnt(c.r_resource);
+  const i5 = nRes >= 1 ? MAX.i5 : 0;
+
+  /* ---- 6. Attending FDPs (25) ---- */
+  const nFdp = cnt(c.d_fdp);
+  const i6 = nFdp >= 1 ? MAX.i6 : 0;
+
+  /* ---- 7. Sponsored research projects (50) ---- */
+  const nSpon = cnt(c.sp_projects);
+  const i7auto = sponsoredMark(nSpon);
+  const i7 = String(state.awarded.i7).trim() === "" ? Math.min(MAX.i7, i7auto) : mk(state.awarded.i7, MAX.i7);
+
+  /* ---- 8. Consultancy activities (50) ---- */
+  const consultTotal = rows("consultancy").reduce((a, x) => a + n(x.amount), 0);
+  const i8 = consultMark(consultTotal);
+
+  /* ---- 9. Students supervision (200) ---- */
+  const supRows = rows("supervision");
+  const i9raw = supRows.reduce((a, e) => {
+    const s = SUPERVISION.find(x => x.l === e.category);
+    return a + (s ? (e.prize === "Yes" ? s.prize : s.base) : 0);
+  }, 0);
+  const i9 = Math.min(MAX.i9, i9raw);
+
+  /* ---- 10. Educational administration assignments (50) ---- */
+  const i10raw = ADMIN_ROLES.reduce((a, x) => a + (state.admin[x.k] ? x.m : 0), 0);
+  const i10 = Math.min(MAX.i10, i10raw);
+
+  /* ---- 11. Organization of educational / co-curricular activities (25) ---- */
+  const i11raw = ORG_ACTIVITIES.reduce((a, x) => a + cnt(state.events[x.k]) * x.m, 0);
+  const i11 = Math.min(MAX.i11, i11raw);
+
+  /* ---- 12. Students ratings on TLP (35) ---- */
+  const i12a = feedbackMark(n(r.feedback)), i12b = cesMark(n(r.ces));
+  const i12 = i12a + i12b;
+
+  /* ---- 13. Research project on internal seed funding (40) ---- */
+  const seedAmt = n(state.seed.amount);
+  const i13 = seedAmt >= 200000 ? MAX.i13 : 0;
+
+  /* ---- 14. Group Head rating (50) ---- */
+  const i14raw = GH_RATING.reduce((a, x) => a + mk(r["gh_" + x.k], x.m), 0);
+  const i14 = Math.min(MAX.i14, i14raw);
+
+  /* ---- 15. HoD rating (50) ---- */
+  const i15raw = HOD_RATING.reduce((a, x) => a + mk(r["hod_" + x.k], x.m), 0);
+  const i15 = Math.min(MAX.i15, i15raw);
+
+  /* ---- 16. Rating by the Head of the Institution (25) ---- */
+  const i16 = mk(r.hoi, MAX.i16);
+
+  const items = [
+    {n:"1",  page:"teaching",       label:"Classroom teaching",                          got:i1,  max:MAX.i1},
+    {n:"2",  page:"mentoring",      label:facultyTrack ? "Faculty mentoring" : "Student mentoring", got:i2, max:MAX.i2},
+    {n:"3",  page:"research",       label:"Research publications",                       got:i3,  max:MAX.i3},
+    {n:"4",  page:"development",    label:"MOOCs through SWAYAM / NPTEL",                got:i4,  max:MAX.i4},
+    {n:"5",  page:"development",    label:"Resource person in FDP / chairing conferences",got:i5, max:MAX.i5},
+    {n:"6",  page:"development",    label:"Attending FDPs",                              got:i6,  max:MAX.i6},
+    {n:"7",  page:"projects",       label:"Sponsored research projects",                 got:i7,  max:MAX.i7},
+    {n:"8",  page:"projects",       label:"Consultancy activities",                      got:i8,  max:MAX.i8},
+    {n:"9",  page:"supervision",    label:"Students supervision for research & allied activities", got:i9, max:MAX.i9},
+    {n:"10", page:"administration", label:"Educational administration assignments",      got:i10, max:MAX.i10},
+    {n:"11", page:"supervision",    label:"Organization of educational activities",      got:i11, max:MAX.i11},
+    {n:"12", page:"ratings",        label:"Students ratings on TLP",                     got:i12, max:MAX.i12},
+    {n:"13", page:"projects",       label:"Project on internal seed funding",            got:i13, max:MAX.i13},
+    {n:"14", page:"ratings",        label:"Group Head rating",                           got:i14, max:MAX.i14},
+    {n:"15", page:"ratings",        label:"HoD rating",                                  got:i15, max:MAX.i15},
+    {n:"16", page:"ratings",        label:"Rating by the Head of the Institution",       got:i16, max:MAX.i16}
+  ];
+  const grand = items.reduce((a, x) => a + x.got, 0);
+
+  /* Mandatory items for sanction of increment. */
+  const gates = [
+    {l:"Item 1.c — PBL project presented at a competition outside the institution", ok:i1c > 0,    page:"teaching",    need:"any score"},
+    {l:"Item 3 — Research publications",                                            ok:i3 >= 50,   page:"research",    need:"minimum 50"},
+    {l:"Item 4 — Qualifying in MOOCs through SWAYAM / NPTEL",                       ok:i4 > 0,     page:"development", need:"one per academic year"},
+    {l:"Item 6 — Attending FDPs",                                                   ok:i6 > 0,     page:"development", need:"any score"},
+    {l:"Item 9 — Students supervision",                                             ok:i9 >= 100,  page:"supervision", need:"minimum 100"}
+  ];
+
+  const required = minFor(state.profile.designation);
+
+  return {
+    i1a,i1b,i1c,i1d,i1e,i1f,i1, i2, facultyTrack,
+    i3,i4,i5,i6,i7,i7auto,i8,i9,i10,i11, i12a,i12b,i12, i13, i14,i15,i16,
+    i9raw, i10raw, i11raw, i14raw, i15raw,
+    courses, metHours, avgPass, consultTotal, seedAmt,
+    nSci, nSwos, nTexts, nMooc, nRes, nFdp, nSpon,
+    items, grand, gates, required,
+    eligible:required > 0 && grand >= required && gates.every(g => g.ok)
+  };
+}
+
+/* Item 2 runs on one of two tracks; designation picks the default. */
+function mentorMode(state){
+  if(state.mentoring.mode) return state.mentoring.mode;
+  const d = state.profile.designation;
+  return d === "Professor" || d === "Professor & Head" || d === "Dean" ? "faculty" : "student";
+}
 
 /* =========================================================
    Small components
@@ -693,6 +1553,50 @@ function Stat({label, value}){
 /* =========================================================
    Entry group — one card per declared entry
    ========================================================= */
+/* A numbered item of the official form, with its running score. */
+function ScoreCard({no, title, max, score, sub, tag, children}){
+  return (
+    <div className="scorecard">
+      <div className="sc-head">
+        <span className="sc-no tnum">{no}</span>
+        <h3>{title}</h3>
+        {tag && <span className="filler">{tag}</span>}
+        <span className={"sc-mark" + (score >= max ? " full" : score > 0 ? " part" : "")}>
+          <b className="tnum">{score}</b><i>/ {max}</i>
+        </span>
+      </div>
+      <div className="sc-body">
+        {sub && <p className="sc-sub">{sub}</p>}
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/* One row of marks that somebody awards. */
+function Mark({label, hint, value, max, onChange}){
+  return (
+    <div className="mrow">
+      <span className="ml">{label}{hint && <i>{hint}</i>}</span>
+      <span className="mi">
+        <input className="tnum" type="number" min="0" max={max} step="1" inputMode="numeric" placeholder="0"
+               value={value} onChange={e => onChange(e.target.value)} />
+        <em>/ {max}</em>
+      </span>
+    </div>
+  );
+}
+
+/* One row of marks the form works out on its own. */
+function AutoMark({label, hint, value, max}){
+  return (
+    <div className="mrow">
+      <span className="ml">{label}{hint && <i>{hint}</i>}</span>
+      <span className="mi"><b className="tnum">{value}</b><em>/ {max}</em></span>
+    </div>
+  );
+}
+
 function EntryGroup({spec, slots, data, setEntry, docBySlot, goDocuments, flagged}){
   if(!slots.length){
     return (
@@ -708,7 +1612,7 @@ function EntryGroup({spec, slots, data, setEntry, docBySlot, goDocuments, flagge
         {spec.label} <span className="chip">item {spec.item}</span>
         <span className="chip brass">{slots.length} {slots.length === 1 ? "entry" : "entries"}</span>
       </h3>
-      <p className="sub">One supporting document is required for each entry. Attach them all together in section F.</p>
+      <p className="sub">One supporting document is required for each entry. Attach them all together in section J.</p>
       <div className="entries">
         {slots.map((slot, i) => {
           const row = data[slot.key] || {};
@@ -764,6 +1668,16 @@ function App(){
   const filesRef = useRef({});
   const bootRef = useRef(false);
   const saveTimer = useRef(null);
+  const cloudTimer = useRef(null);
+
+  /* ---------- backend ---------- */
+  const [user, setUser] = useState(null);          // signed-in Entra account
+  const [authBusy, setAuthBusy] = useState(false);
+  const [authErr, setAuthErr] = useState("");
+  const [cloud, setCloud] = useState("");          // draft status line
+  const [offer, setOffer] = useState(null);        // a newer draft found in OneDrive
+  const [send, setSend] = useState(null);          // {phase, done, total, label, result, error}
+  const backendOn = typeof PBAS !== "undefined" && PBAS.configured;
 
   /* ---------- draft restore ---------- */
   useEffect(() => {
@@ -772,10 +1686,24 @@ function App(){
       if(raw){
         const d = JSON.parse(raw);
         d.docs = (d.docs || []).map(x => ({...x, stale:true}));
-        setState(s => ({...blankState(), ...d, profile:{...s.profile, ...d.profile}, counts:{...s.counts, ...d.counts}}));
+        const b = blankState();
+        setState({...b, ...d,
+          profile:{...b.profile, ...d.profile}, counts:{...b.counts, ...d.counts},
+          teaching:{...b.teaching, ...d.teaching}, mentoring:{...b.mentoring, ...d.mentoring},
+          events:{...b.events, ...d.events}, admin:{...b.admin, ...d.admin},
+          seed:{...b.seed, ...d.seed}, ratings:{...b.ratings, ...d.ratings},
+          awarded:{...b.awarded, ...d.awarded}});
       }
     }catch(e){ /* storage unavailable */ }
     bootRef.current = true;
+
+    /* An existing Microsoft session survives a reload — pick it back up
+       silently, so the faculty member is not asked to sign in twice. */
+    if(backendOn){
+      PBAS.init()
+        .then(() => { if(PBAS.account()) setUser({email:PBAS.email(), name:PBAS.displayName()}); })
+        .catch(e => setAuthErr(e.message));
+    }
   }, []);
 
   /* ---------- draft save ---------- */
@@ -785,12 +1713,71 @@ function App(){
     saveTimer.current = setTimeout(() => {
       try{
         localStorage.setItem(STORAGE, JSON.stringify({...state, docs:state.docs.map(({id,name,size,slot}) => ({id,name,size,slot}))}));
+        localStorage.setItem(STORAGE + ":at", String(Date.now()));
         setSaved(true);
         setTimeout(() => setSaved(false), 1600);
       }catch(e){ /* ignore */ }
     }, 400);
     return () => clearTimeout(saveTimer.current);
   }, [state]);
+
+  /* ---------- draft to OneDrive ----------
+     Kept in the signed-in user's own app folder, so a form started on a
+     desktop can be finished on a laptop. Slower cadence than the local
+     save: this one crosses the network. */
+  useEffect(() => {
+    if(!bootRef.current || !user || !backendOn) return;
+    clearTimeout(cloudTimer.current);
+    cloudTimer.current = setTimeout(() => {
+      setCloud("saving");
+      PBAS.saveDraft({...state, docs:state.docs.map(({id,name,size,slot}) => ({id,name,size,slot}))})
+        .then(() => { setCloud("saved"); setTimeout(() => setCloud(""), 2200); })
+        .catch(() => setCloud("failed"));
+    }, 4000);
+    return () => clearTimeout(cloudTimer.current);
+  }, [state, user, backendOn]);
+
+  /* On sign-in, see whether OneDrive holds a draft newer than this tab's. */
+  const pullDraft = useCallback(() => {
+    if(!backendOn) return;
+    PBAS.loadDraft().then(d => {
+      if(!d || !d.data) return;
+      let localAt = 0;
+      try{ localAt = Number(localStorage.getItem(STORAGE + ":at") || 0); }catch(e){}
+      const remoteAt = new Date(d.savedAt).getTime();
+      if(remoteAt > localAt + 1000) setOffer(d);
+    }).catch(() => {});
+  }, [backendOn]);
+
+  const acceptDraft = () => {
+    if(!offer) return;
+    const b = blankState(), d = offer.data;
+    d.docs = (d.docs || []).map(x => ({...x, stale:true}));
+    setState({...b, ...d,
+      profile:{...b.profile, ...d.profile}, counts:{...b.counts, ...d.counts},
+      teaching:{...b.teaching, ...d.teaching}, mentoring:{...b.mentoring, ...d.mentoring},
+      events:{...b.events, ...d.events}, admin:{...b.admin, ...d.admin},
+      seed:{...b.seed, ...d.seed}, ratings:{...b.ratings, ...d.ratings},
+      awarded:{...b.awarded, ...d.awarded}});
+    filesRef.current = {};
+    setOffer(null);
+    setPage("profile");
+    window.scrollTo({top:0});
+  };
+
+  /* ---------- sign in / out ---------- */
+  const doSignIn = () => {
+    setAuthErr(""); setAuthBusy(true);
+    PBAS.signIn()
+      .then(() => { setUser({email:PBAS.email(), name:PBAS.displayName()}); pullDraft(); })
+      .catch(e => setAuthErr(e.message))
+      .then(() => setAuthBusy(false));
+  };
+
+  const doSignOut = () => {
+    setAuthBusy(true);
+    PBAS.signOut().then(() => { setUser(null); setOffer(null); setCloud(""); setAuthBusy(false); });
+  };
 
   /* ---------- printing renders every page ---------- */
   useEffect(() => {
@@ -803,6 +1790,13 @@ function App(){
   const setProfile = (k, v) => setState(s => ({...s, profile:{...s.profile, [k]:v}}));
   const setLoad    = (k, v) => setState(s => ({...s, load:{...s.load, [k]:v}}));
   const setCount   = (k, v) => setState(s => ({...s, counts:{...s.counts, [k]:v}}));
+  const setTeach   = (k, v) => setState(s => ({...s, teaching:{...s.teaching, [k]:v}}));
+  const setMentor  = (k, v) => setState(s => ({...s, mentoring:{...s.mentoring, [k]:v}}));
+  const setEvent   = (k, v) => setState(s => ({...s, events:{...s.events, [k]:v}}));
+  const setAdmin   = (k, v) => setState(s => ({...s, admin:{...s.admin, [k]:v}}));
+  const setAwarded = (k, v) => setState(s => ({...s, awarded:{...s.awarded, [k]:v}}));
+  const setSeed    = (k, v) => setState(s => ({...s, seed:{...s.seed, [k]:v}}));
+  const setRating  = (k, v) => setState(s => ({...s, ratings:{...s.ratings, [k]:v}}));
   const setEntry   = useCallback((slotKey, f, v) =>
     setState(s => ({...s, data:{...s.data, [slotKey]:{...(s.data[slotKey] || {}), [f]:v}}})), []);
 
@@ -921,6 +1915,9 @@ function App(){
     return {j, cf, pubs:j + cf, pat:cnt(c.p_utility) + cnt(c.p_design)};
   }, [state.counts]);
 
+  const sc = useMemo(() => computeScores(state, slotsBySpec), [state, slotsBySpec]);
+  const track = mentorMode(state);
+
   /* ---------- validation ---------- */
   const problems = useMemo(() => {
     const out = [];
@@ -930,6 +1927,11 @@ function App(){
     if(!p.empid.trim()) out.push({page:"profile", text:"Enter the employee ID."});
     if(!p.doj)          out.push({page:"profile", text:"Enter the date of joining."});
     else if(new Date(p.doj + "T00:00:00") > new Date()) out.push({page:"profile", text:"The date of joining cannot be in the future."});
+    if(!p.designation) out.push({page:"profile", text:"Select a designation — it sets the mentoring track and the minimum marks required."});
+
+    if(!Object.keys(state.load).some(k => String(state.load[k] || "").trim()))
+      out.push({page:"teaching", text:"Enter at least one theory subject or laboratory handled during the cycle."});
+    if(!state.teaching.c_title.trim()) out.push({page:"teaching", text:"Item 1.c is mandatory — enter the PBL project presented outside the institution."});
 
     SPECS.forEach(spec => {
       const list = slotsBySpec[spec.id];
@@ -942,7 +1944,7 @@ function App(){
 
     if(!state.declaration) out.push({page:"declaration", text:"Tick the declaration before submitting."});
     return out;
-  }, [state, slotsBySpec, allSlots, docBySlot]);
+  }, [state, slotsBySpec, allSlots, docBySlot, sc]);
 
   const pageStatus = useMemo(() => {
     const st = {};
@@ -950,10 +1952,14 @@ function App(){
       const bad = problems.filter(i => i.page === pg.id).length;
       const touched =
         pg.id === "profile" ? Object.values(state.profile).some(Boolean)
-        : pg.id === "load" ? Object.values(state.load).some(Boolean)
+        : pg.id === "teaching" ? Object.values(state.load).some(Boolean) || Object.values(state.teaching).some(Boolean)
+        : pg.id === "mentoring" ? Object.values(state.mentoring).some(Boolean)
         : pg.id === "research" ? slotsBySpec.journal.length + slotsBySpec.conference.length + slotsBySpec.patent.length + slotsBySpec.book.length + slotsBySpec.chapter.length > 0
-        : pg.id === "development" ? slotsBySpec.fdp.length + slotsBySpec.nptel.length > 0 || !!state.counts.credits
-        : pg.id === "roles" ? state.awards.length > 0 || state.roles.some(r => r.role)
+        : pg.id === "development" ? slotsBySpec.fdp.length + slotsBySpec.nptel.length + slotsBySpec.resource.length > 0 || !!state.counts.credits
+        : pg.id === "projects" ? slotsBySpec.sponsored.length + slotsBySpec.consultancy.length > 0 || Object.values(state.seed).some(Boolean)
+        : pg.id === "supervision" ? slotsBySpec.supervision.length > 0 || Object.values(state.events).some(Boolean)
+        : pg.id === "administration" ? Object.values(state.admin).some(Boolean) || state.awards.length > 0 || state.roles.some(r => r.role)
+        : pg.id === "ratings" ? Object.values(state.ratings).some(Boolean)
         : pg.id === "documents" ? state.docs.length > 0
         : state.declaration;
       st[pg.id] = bad ? (touched ? "part" : "") : (touched ? "ok" : "");
@@ -973,16 +1979,42 @@ function App(){
     }
   };
 
+  /* Hand the form to SharePoint: certificates first, then submission.json
+     beside them, then the row the SDC dashboard reads. */
+  const sendToSDC = () => {
+    if(!backendOn || !user || (send && send.phase === "sending")) return;
+    const files = state.docs
+      .filter(d => filesRef.current[d.id])
+      .map(d => ({name:d.name, slot:d.slot || null, file:filesRef.current[d.id]}));
+
+    setSend({phase:"sending", done:0, total:files.length + 3, label:"Starting"});
+    PBAS.submit(buildPayload(), files, (done, total, label) => setSend({phase:"sending", done, total, label}))
+      .then(res => {
+        setSend({phase:"done", result:res});
+        PBAS.deleteDraft().catch(() => {});
+        try{
+          localStorage.removeItem(STORAGE);
+          localStorage.removeItem(STORAGE + ":at");
+        }catch(e){}
+        window.scrollTo({top:0, behavior:"smooth"});
+      })
+      .catch(e => setSend({phase:"error", error:e.message}));
+  };
+
   const clearAll = () => {
     if(!window.confirm("Clear every field, entry and attachment, and start a fresh appraisal form?")) return;
     filesRef.current = {};
     setState(blankState());
     setAttempted(false); setReview(false); setPage("profile");
-    try{ localStorage.removeItem(STORAGE); }catch(e){}
+    setSend(null);
+    try{
+      localStorage.removeItem(STORAGE);
+      localStorage.removeItem(STORAGE + ":at");
+    }catch(e){}
+    if(user && backendOn) PBAS.deleteDraft().catch(() => {});
   };
 
-  const exportJSON = () => {
-    const payload = {
+  const buildPayload = useCallback(() => ({
       exportedOn:new Date().toISOString(),
       profile:{...state.profile, experienceInGcet:service, overallExperience:overall},
       teachingLoad:state.load,
@@ -991,10 +2023,30 @@ function App(){
         section:sl.spec.label, group:sl.group, ...(state.data[sl.key] || {}),
         document:(docBySlot[sl.key] || {}).name || null
       })),
+      classroomTeaching:{...state.teaching, theoryCourses:sc.courses},
+      mentoring:{track:track === "faculty" ? "Faculty mentoring" : "Student mentoring", ...state.mentoring},
+      administration:{
+        assignments:ADMIN_ROLES.filter(x => state.admin[x.k]).map(x => ({role:x.l, marks:x.m})),
+        note:state.adminNote
+      },
+      organizedActivities:ORG_ACTIVITIES.filter(x => cnt(state.events[x.k])).map(x => ({activity:x.l, count:cnt(state.events[x.k]), marksEach:x.m})),
+      internalSeedFunding:state.seed,
+      marksAwardedAboveBands:state.awarded,
+      ratings:state.ratings,
+      scores:{
+        items:sc.items.map(x => ({item:x.n, description:x.label, score:x.got, max:x.max})),
+        grandTotal:sc.grand, outOf:MAX.total,
+        minimumRequired:sc.required || null,
+        mandatory:sc.gates.map(g => ({requirement:g.l, need:g.need, met:g.ok})),
+        eligibleForIncrement:sc.eligible
+      },
       awards:state.awards, roles:state.roles,
       otherDocuments:unassigned.map(d => d.name),
       remarks:state.remarks, declaration:state.declaration
-    };
+  }), [state, service, overall, allSlots, docBySlot, sc, track, unassigned]);
+
+  const exportJSON = () => {
+    const payload = buildPayload();
     const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"}));
     const a = document.createElement("a");
     a.href = url;
@@ -1044,6 +2096,20 @@ function App(){
         <span className={"docpill" + (allSlots.length && liveDocs === allSlots.length ? " done" : "")}>
           Documents <b className="tnum">{liveDocs} / {allSlots.length}</b>
         </span>
+        {backendOn && (user
+          ? <React.Fragment>
+              {cloud && <span className={"cloudpill noprint" + (cloud === "failed" ? " failed" : "")}>
+                {cloud === "saving" ? "Saving to OneDrive\u2026" : cloud === "saved" ? "Draft saved to OneDrive" : "OneDrive draft failed"}
+              </span>}
+              <span className="acct noprint">
+                <span className="dot"></span>
+                <span className="who"><b>{user.name}</b><span>{user.email}</span></span>
+                <button type="button" onClick={doSignOut} disabled={authBusy}>Sign out</button>
+              </span>
+            </React.Fragment>
+          : <button type="button" className="btn btn-sm noprint" onClick={doSignIn} disabled={authBusy}>
+              {authBusy ? "Signing in\u2026" : "Sign in"}
+            </button>)}
         <button type="button" className="btn btn-quiet btn-sm" onClick={toggleTheme}>{dark === null ? "Theme" : dark ? "Light" : "Dark"}</button>
         <button type="button" className="btn btn-sm" onClick={exportJSON}>Export</button>
         <button type="button" className="btn btn-sm" onClick={() => setPrinting(true)}>Print</button>
@@ -1081,6 +2147,40 @@ function App(){
         <main className="main">
           <div className="page">
 
+            {backendOn && !user && !printing && (
+              <div className="notebox noprint">
+                <div>
+                  <b>Sign in to submit.</b> The form fills in and prints without signing in, but
+                  sending it to the SDC needs your college Microsoft account.
+                </div>
+                <div className="sp"></div>
+                <button type="button" className="btn btn-primary btn-sm" onClick={doSignIn} disabled={authBusy}>
+                  {authBusy ? "Signing in\u2026" : "Sign in with @" + PBAS.allowedDomain}
+                </button>
+              </div>
+            )}
+
+            {authErr && !printing && (
+              <div className="issues noprint">
+                <h4>Sign-in failed</h4>
+                <ul><li><span>{authErr}</span>
+                  <button type="button" onClick={() => setAuthErr("")}>Dismiss</button></li></ul>
+              </div>
+            )}
+
+            {offer && !printing && (
+              <div className="notebox noprint">
+                <div>
+                  <b>A newer draft is saved in your OneDrive</b>, from{" "}
+                  {new Date(offer.savedAt).toLocaleString("en-IN")}. Loading it replaces what is on
+                  screen now. Certificates will need re-attaching either way.
+                </div>
+                <div className="sp"></div>
+                <button type="button" className="btn btn-sm" onClick={() => setOffer(null)}>Keep this one</button>
+                <button type="button" className="btn btn-primary btn-sm" onClick={acceptDraft}>Load the saved draft</button>
+              </div>
+            )}
+
             {attempted && problems.length > 0 && (
               <div className="issues noprint">
                 <h4>{problems.length} item{problems.length === 1 ? "" : "s"} need attention</h4>
@@ -1102,7 +2202,7 @@ function App(){
             {show("profile") && (
               <section>
                 <div className="phead">
-                  <p className="eye">Section A · Items 1 – 7</p>
+                  <p className="eye">Section A · Identity &amp; experience</p>
                   <h2>Faculty Profile</h2>
                   <p>Your identity, date of joining and experience breakup. Service at GCET and overall experience are worked out for you.</p>
                 </div>
@@ -1117,8 +2217,9 @@ function App(){
                     <Field label={<span>Department <em className="req">*</em></span>}>
                       <Select value={state.profile.dept} options={DEPARTMENTS} bad={flagged && !state.profile.dept} placeholder="Select department" onChange={v => setProfile("dept", v)} />
                     </Field>
-                    <Field label="Designation">
-                      <Select value={state.profile.designation} options={DESIGNATIONS} placeholder="Select designation" onChange={v => setProfile("designation", v)} />
+                    <Field label={<span>Designation <em className="req">*</em></span>}
+                           hint={sc.required ? `Minimum ${sc.required} of ${MAX.total} marks required for sanction of increment.` : "Sets the mentoring track and the minimum marks required."}>
+                      <Select value={state.profile.designation} options={DESIGNATIONS} bad={flagged && !state.profile.designation} placeholder="Select designation" onChange={v => setProfile("designation", v)} />
                     </Field>
                     <Field label={<span>Date of joining in GCET <em className="req">*</em></span>} hint="DD / MM / YYYY">
                       <Text type="date" value={state.profile.doj} bad={flagged && !state.profile.doj} onChange={v => setProfile("doj", v)} />
@@ -1130,7 +2231,7 @@ function App(){
                 </div>
 
                 <div className="card">
-                  <h3 className="ch">Experience breakup <span className="chip">item 6</span></h3>
+                  <h3 className="ch">Experience breakup</h3>
                   <p className="sub">Enter each in years. The overall figure adds itself up.</p>
                   <div className="fgrid">
                     <Field label="Teaching experience (A)" suffix="years">
@@ -1150,74 +2251,248 @@ function App(){
               </section>
             )}
 
-            {/* ---------------- B. Teaching load ---------------- */}
-            {show("load") && (
+            {/* ---------------- B. Classroom teaching · item 1 ---------------- */}
+            {show("teaching") && (
               <section>
                 <div className="phead">
-                  <p className="eye">Section B · Items 8 – 9</p>
-                  <h2>Teaching Load</h2>
-                  <p>Theory subjects and laboratories handled in each semester of the cycle.</p>
+                  <p className="eye">Section B · Item 1 · 150 marks</p>
+                  <h2>Classroom Teaching</h2>
+                  <p>Courses handled in each semester, and the six components of item 1. Hours taken and pass percentages entered below settle items 1.a and 1.e on their own.</p>
                 </div>
-                {[{p:"s1", t:"Semester I", item:"8"}, {p:"s2", t:"Semester II", item:"9"}].map(sem => (
+
+                {[{p:"s1", t:"Semester I"}, {p:"s2", t:"Semester II"}].map(sem => (
                   <div className="card" key={sem.p}>
                     <h3 className="ch">
-                      {sem.t} <span className="chip">item {sem.item}</span>
+                      {sem.t}
                       {sem.p === "s2" && (
                         <button type="button" className="btn btn-quiet btn-sm noprint" style={{marginLeft:"auto"}}
                           onClick={() => setState(s => {
                             const nx = {...s.load};
-                            ["sub1","sub2","sub3","lab1","lab2","lab3"].forEach(k => { nx["s2_" + k] = s.load["s1_" + k] || ""; });
+                            ["sub1","sub2","sub3","lab1","lab2","lab3"].forEach(k => {
+                              nx["s2_" + k] = s.load["s1_" + k] || "";
+                              nx["s2_" + k + "_hrs"] = s.load["s1_" + k + "_hrs"] || "";
+                            });
+                            [1,2,3].forEach(i => { nx[`s2_sub${i}_pass`] = s.load[`s1_sub${i}_pass`] || ""; });
                             return {...s, load:nx};
                           })}>Same as Semester I</button>
                       )}
                     </h3>
-                    <p className="sub">Leave a line blank if it does not apply.</p>
+                    <p className="sub">Leave a line blank if it does not apply. A 3-credit theory course needs at least {MIN_HOURS} hours.</p>
+
                     <div className="loadgroup">
-                      <h4>Theory subjects</h4>
-                      <div className="fgrid">
-                        {[1,2,3].map(i => (
-                          <Field key={"s" + i} label={`Subject ${i}`}>
+                      <h4>Theory subjects · hours &amp; results</h4>
+                      {[1,2,3].map(i => (
+                        <div className="courserow" key={"s" + i}>
+                          <Field label={`Subject ${i}`}>
                             <Text value={state.load[`${sem.p}_sub${i}`]} placeholder="Course title" onChange={v => setLoad(`${sem.p}_sub${i}`, v)} />
                           </Field>
-                        ))}
-                      </div>
+                          <Field label="Hours taken" suffix="hrs" hint={`Minimum ${MIN_HOURS}`}>
+                            <Text type="number" min="0" step="1" className="tnum" value={state.load[`${sem.p}_sub${i}_hrs`]} placeholder="0" onChange={v => setLoad(`${sem.p}_sub${i}_hrs`, v)} />
+                          </Field>
+                          <Field label="Pass percentage" suffix="%" hint="Theory result">
+                            <Text type="number" min="0" max="100" step="0.01" className="tnum" value={state.load[`${sem.p}_sub${i}_pass`]} placeholder="0" onChange={v => setLoad(`${sem.p}_sub${i}_pass`, v)} />
+                          </Field>
+                        </div>
+                      ))}
                     </div>
+
                     <div className="loadgroup ruled">
                       <h4>Laboratories</h4>
-                      <div className="fgrid">
-                        {[1,2,3].map(i => (
-                          <Field key={"l" + i} label={`Lab ${i}`}>
+                      {[1,2,3].map(i => (
+                        <div className="courserow two" key={"l" + i}>
+                          <Field label={`Lab ${i}`}>
                             <Text value={state.load[`${sem.p}_lab${i}`]} placeholder="Laboratory title" onChange={v => setLoad(`${sem.p}_lab${i}`, v)} />
                           </Field>
-                        ))}
-                      </div>
+                          <Field label="Hours taken" suffix="hrs">
+                            <Text type="number" min="0" step="1" className="tnum" value={state.load[`${sem.p}_lab${i}_hrs`]} placeholder="0" onChange={v => setLoad(`${sem.p}_lab${i}_hrs`, v)} />
+                          </Field>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))}
+
+                <div style={{height:26}}></div>
+
+                <ScoreCard no="1" title="Classroom teaching (including laboratory instruction) and results" max={MAX.i1} score={sc.i1}>
+                  <div className="sc-part">
+                    <h4>a · Number of hours taken per course per section <span className="chip">auto</span></h4>
+                    <p>Ex: minimum {MIN_HOURS} hours in a 3-credit course. Worked out from the hours entered against each theory subject above — {sc.metHours} of {sc.courses.length || 0} {sc.courses.length === 1 ? "course meets" : "courses meet"} the minimum.</p>
+                    <div className="mrows">
+                      <AutoMark label="Hours taken per course per section" hint={sc.courses.length ? `${sc.metHours} / ${sc.courses.length} courses at or above ${MIN_HOURS} hours` : "Enter theory subjects and hours above"} value={sc.i1a} max={MAX.i1a} />
+                    </div>
+                  </div>
+
+                  <div className="sc-part">
+                    <h4>b · Pedagogical initiatives including innovations brought in TLP</h4>
+                    <div className="fgrid">
+                      <Field label="Initiatives and innovations introduced" wide>
+                        <textarea value={state.teaching.b_note} placeholder="Flipped classroom, ICT tools, activity based learning, new assessment patterns, and so on."
+                                  onChange={e => setTeach("b_note", e.target.value)} />
+                      </Field>
+                    </div>
+                    <div className="mrows" style={{marginTop:14}}>
+                      <Mark label="Pedagogical initiatives including innovations brought in TLP" value={state.teaching.b_marks} max={MAX.i1b} onChange={v => setTeach("b_marks", v)} />
+                    </div>
+                  </div>
+
+                  <div className="sc-part">
+                    <h4>c · Implementation of PBL and at least one project <span className="filler">mandatory</span></h4>
+                    <p>Presented at a competition outside the institution, preferably in a university or institution of higher repute. A minimum of 25 hours of project work, or 3 to 4 case studies as applicable.</p>
+                    <div className="fgrid">
+                      <Field label="Title of the project" wide>
+                        <Text value={state.teaching.c_title} bad={flagged && !state.teaching.c_title.trim()} placeholder="Title of the PBL project" onChange={v => setTeach("c_title", v)} />
+                      </Field>
+                      <Field label="Hours of project work" suffix="hrs" hint="Minimum 25">
+                        <Text type="number" min="0" step="1" className="tnum" value={state.teaching.c_hours} placeholder="0" onChange={v => setTeach("c_hours", v)} />
+                      </Field>
+                      <Field label="Case studies carried out" hint="3 to 4, as applicable">
+                        <Text type="number" min="0" step="1" className="tnum" value={state.teaching.c_cases} placeholder="0" onChange={v => setTeach("c_cases", v)} />
+                      </Field>
+                      <Field label="Competition or event" wide>
+                        <Text value={state.teaching.c_event} placeholder="Name of the competition the project was presented at" onChange={v => setTeach("c_event", v)} />
+                      </Field>
+                      <Field label="Institution of higher repute">
+                        <Text value={state.teaching.c_venue} placeholder="University / institution" onChange={v => setTeach("c_venue", v)} />
+                      </Field>
+                      <Field label="Date of presentation">
+                        <Text type="date" value={state.teaching.c_date} onChange={v => setTeach("c_date", v)} />
+                      </Field>
+                      <Field label="Outcome" wide>
+                        <Text value={state.teaching.c_outcome} placeholder="Prize won, certificate, publication, prototype, and so on" onChange={v => setTeach("c_outcome", v)} />
+                      </Field>
+                    </div>
+                    <div className="mrows" style={{marginTop:14}}>
+                      <Mark label="Implementation of PBL and the project presented outside the institution" value={state.teaching.c_marks} max={MAX.i1c} onChange={v => setTeach("c_marks", v)} />
+                    </div>
+                  </div>
+
+                  <div className="sc-part">
+                    <h4>d · Action taken for improving performance of slow learners</h4>
+                    <div className="fgrid">
+                      <Field label="Remedial teaching and action taken" wide>
+                        <textarea value={state.teaching.d_note} placeholder="Identification of slow learners, remedial classes conducted, improvement recorded."
+                                  onChange={e => setTeach("d_note", e.target.value)} />
+                      </Field>
+                    </div>
+                    <div className="mrows" style={{marginTop:14}}>
+                      <Mark label="Action taken for slow learners and remedial teaching" value={state.teaching.d_marks} max={MAX.i1d} onChange={v => setTeach("d_marks", v)} />
+                    </div>
+                  </div>
+
+                  <div className="sc-part">
+                    <h4>e · Results obtained <span className="chip">auto</span></h4>
+                    <p>Pass percentage of theory courses, as decided by the department. &gt;95%: 30 &nbsp;·&nbsp; &gt;90 &lt;95: 25 &nbsp;·&nbsp; &gt;85 &lt;90: 20 &nbsp;·&nbsp; &gt;80 &lt;85: 15 &nbsp;·&nbsp; &gt;75 &lt;80: 10 &nbsp;·&nbsp; ≥65 &lt;75: 05</p>
+                    <div className="mrows">
+                      <AutoMark label="Results obtained" hint={sc.avgPass ? `Average pass percentage across theory courses: ${round2(sc.avgPass)}%` : "Enter the pass percentage against each theory subject above"} value={sc.i1e} max={MAX.i1e} />
+                    </div>
+                  </div>
+
+                  <div className="sc-part">
+                    <h4>f · Class room observation of faculty</h4>
+                    <p>Marks awarded on the enclosed observation sheet.</p>
+                    <div className="fgrid">
+                      <Field label="Date of observation"><Text type="date" value={state.teaching.f_date} onChange={v => setTeach("f_date", v)} /></Field>
+                      <Field label="Observed by"><Text value={state.teaching.f_by} placeholder="Name and designation of the observer" onChange={v => setTeach("f_by", v)} /></Field>
+                    </div>
+                    <div className="mrows" style={{marginTop:14}}>
+                      <Mark label="Class room observation of faculty (observation sheet enclosed)" value={state.teaching.f_marks} max={MAX.i1f} onChange={v => setTeach("f_marks", v)} />
+                    </div>
+                  </div>
+                </ScoreCard>
               </section>
             )}
 
-            {/* ---------------- C. Research ---------------- */}
+            {/* ---------------- C. Mentoring · item 2 ---------------- */}
+            {show("mentoring") && (
+              <section>
+                <div className="phead">
+                  <p className="eye">Section C · Item 2 · 50 marks</p>
+                  <h2>Mentoring</h2>
+                  <p>Student mentoring applies to Assistant and Associate Professors. Professors record faculty mentoring instead, with proof of faculty career progression.</p>
+                </div>
+
+                <div className="card">
+                  <div className="fgrid">
+                    <Field label="Which track applies" hint="Set from your designation; change it if the department has decided otherwise.">
+                      <select value={track} onChange={e => setMentor("mode", e.target.value)}>
+                        <option value="student">Student mentoring — Asst. / Associate Professor</option>
+                        <option value="faculty">Faculty mentoring — Professor</option>
+                      </select>
+                    </Field>
+                    <Field label={track === "faculty" ? "Faculty members mentored" : "Students mentored"}>
+                      <Text type="number" min="0" step="1" className="tnum" value={state.mentoring.mentees} placeholder="0" onChange={v => setMentor("mentees", v)} />
+                    </Field>
+                    <Field label={track === "faculty" ? "Proof of faculty career progression" : "Mentoring notes"} wide>
+                      <textarea value={state.mentoring.note}
+                                placeholder={track === "faculty"
+                                  ? "Ph.D. registrations and awards, promotions, publications, certifications achieved by the mentees."
+                                  : "Attendance improvement, placements, higher studies, certifications and value added courses completed by the mentees."}
+                                onChange={e => setMentor("note", e.target.value)} />
+                    </Field>
+                  </div>
+                </div>
+
+                <div style={{height:26}}></div>
+
+                {track === "student" ? (
+                  <ScoreCard no="2" title="Student mentoring" max={MAX.i2} score={sc.i2}
+                             sub="Applicable in the case of Assistant and Associate Professors.">
+                    <div className="mrows">
+                      <Mark label="a · Attendance monitoring and improvement brought"       value={state.mentoring.a_marks} max={MAX.i2a} onChange={v => setMentor("a_marks", v)} />
+                      <Mark label="b · Career mentoring for professional excellence"        value={state.mentoring.b_marks} max={MAX.i2b} onChange={v => setMentor("b_marks", v)} />
+                      <Mark label="c · Personality development"                             value={state.mentoring.c_marks} max={MAX.i2c} onChange={v => setMentor("c_marks", v)} />
+                      <Mark label="d · Academic progression"                                value={state.mentoring.d_marks} max={MAX.i2d} onChange={v => setMentor("d_marks", v)} />
+                      <Mark label="e · Monitoring students complete a value added / employability course" value={state.mentoring.e_marks} max={MAX.i2e} onChange={v => setMentor("e_marks", v)} />
+                    </div>
+                  </ScoreCard>
+                ) : (
+                  <ScoreCard no="2" title="Faculty mentoring" max={MAX.i2} score={sc.i2}
+                             sub="Applicable in the case of Professors, who need to submit proof of faculty career progression.">
+                    <div className="mrows">
+                      <Mark label="a · Career mentoring for professional excellence" value={state.mentoring.fa_marks} max={MAX.i2fa} onChange={v => setMentor("fa_marks", v)} />
+                      <Mark label="b · Personality development"                      value={state.mentoring.fb_marks} max={MAX.i2fb} onChange={v => setMentor("fb_marks", v)} />
+                    </div>
+                  </ScoreCard>
+                )}
+              </section>
+            )}
+
+            {/* ---------------- D. Research · item 3 ---------------- */}
             {show("research") && (
               <section>
                 <div className="phead">
-                  <p className="eye">Section C · Items 10, 11, 14, 15, 16</p>
+                  <p className="eye">Section D · Item 3 · 100 marks</p>
                   <h2>Research &amp; Publications</h2>
-                  <p>Everything published between July 2025 and June 2026. Enter your counts first — the entry cards below follow from them.</p>
+                  <p>Research papers, articles and text books published between July 2025 and June 2026. Enter your counts first — the entry cards below follow from them.</p>
                 </div>
+
                 <div className="card">
                   <p className="note">Each count creates that many entry cards, and each card needs one supporting document.</p>
-                  <div className="counts">
-                    {[["j_sci","Journals — SCI"],["j_scopus","Journals — Scopus"],["j_wos","Journals — Web of Science"],["j_ieee","Journals — IEEE Transactions"],
-                      ["c_ieee","Conferences — IEEE"],["c_springer","Conferences — Springer"],["p_utility","Utility patents"],["p_design","Design patents"],
-                      ["b_books","Books authored"],["b_chapters","Book chapters published"]].map(([k, l]) => (
-                      <div className="cbox" key={k}>
-                        <label htmlFor={"c_" + k}>{l}</label>
-                        <input id={"c_" + k} className="tnum" type="number" min="0" max="99" step="1" inputMode="numeric" placeholder="0"
-                               value={state.counts[k]} onChange={e => setCount(k, e.target.value)} />
+                  {[
+                    {t:"Journals",    n:"Indexed journal papers published during the cycle.",
+                     rows:[["j_sci","SCI"],["j_scopus","Scopus"],["j_wos","Web of Science"],["j_ieee","IEEE Transactions"]]},
+                    {t:"Conferences", n:"Papers presented at IEEE and Springer conferences.",
+                     rows:[["c_ieee","IEEE"],["c_springer","Springer"]]},
+                    {t:"Books",       n:"Text books authored and chapters contributed. Mark the publisher category on each book card.",
+                     rows:[["b_books","Text books authored"],["b_chapters","Book chapters published"]]},
+                    {t:"Patents",     n:"Patents published or granted during the cycle.",
+                     rows:[["p_utility","Utility patents"],["p_design","Design patents"]]}
+                  ].map((g, gi) => (
+                    <div className={"countgroup" + (gi ? " ruled" : "")} key={g.t}>
+                      <h4>{g.t}</h4>
+                      <p>{g.n}</p>
+                      <div className="counts">
+                        {g.rows.map(([k, l]) => (
+                          <div className="cbox" key={k}>
+                            <label htmlFor={"c_" + k}>{l}</label>
+                            <input id={"c_" + k} className="tnum" type="number" min="0" max="99" step="1" inputMode="numeric" placeholder="0"
+                                   value={state.counts[k]} onChange={e => setCount(k, e.target.value)} />
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                   <div className="stats">
                     <Stat label="Journals" value={totals.j} />
                     <Stat label="Conferences" value={totals.cf} />
@@ -1225,6 +2500,21 @@ function App(){
                     <Stat label="Total patents" value={totals.pat} />
                   </div>
                 </div>
+
+                <div style={{height:16}}></div>
+
+                <ScoreCard no="3" title="Research publications — research papers, articles, text books etc." max={MAX.i3} score={sc.i3}
+                           tag="mandatory · min 50"
+                           sub="Capped at 100. An SCI paper alone carries the full 100; Scopus and Web of Science papers carry 50 each, up to two a year.">
+                  <div className="mrows">
+                    <AutoMark label="a · SCI publication (one per year)"                        hint={`${sc.nSci} declared × 100`} value={Math.min(MAX.i3, sc.nSci * 100)} max={100} />
+                    <AutoMark label="b · Scopus indexed / Web of Science (two per year)"        hint={`${sc.nSwos} declared × 50 per paper`} value={Math.min(MAX.i3, sc.nSwos * 50)} max={100} />
+                    <AutoMark label="c · Text book with an international publisher"            hint={`${sc.nTexts} of the ${cnt(state.counts.b_books)} book${cnt(state.counts.b_books) === 1 ? "" : "s"} marked as an international publisher`} value={Math.min(MAX.i3, sc.nTexts * 100)} max={100} />
+                    <AutoMark label="Item 3 total (capped at 100)"                              value={sc.i3} max={MAX.i3} />
+                  </div>
+                  {sc.i3 < 50 && <p className="sc-sub" style={{marginTop:14,marginBottom:0}}>A minimum score of 50 under item 3 is mandatory for sanction of increment.</p>}
+                </ScoreCard>
+
                 <div style={{height:26}}></div>
                 {SPECS.filter(s => s.page === "research").map(spec => (
                   <EntryGroup key={spec.id} spec={spec} slots={slotsBySpec[spec.id]} data={state.data}
@@ -1234,18 +2524,20 @@ function App(){
               </section>
             )}
 
-            {/* ---------------- D. Development ---------------- */}
+            {/* ---------------- E. Professional development · items 4 – 6 ---------------- */}
             {show("development") && (
               <section>
                 <div className="phead">
-                  <p className="eye">Section D · Items 12 – 13</p>
+                  <p className="eye">Section E · Items 4 – 6 · 125 marks</p>
                   <h2>Professional Development</h2>
-                  <p>Faculty development programmes attended or organised, and NPTEL / MOOC certifications earned.</p>
+                  <p>MOOCs qualified through SWAYAM or NPTEL, work as a resource person or conference chair, and faculty development programmes attended.</p>
                 </div>
+
                 <div className="card">
                   <p className="note">Each count creates that many entry cards, and each card needs one certificate.</p>
                   <div className="counts">
-                    {[["d_fdp","FDPs attended"],["d_nptel","NPTEL courses"],["d_certs","MOOCs / other certifications"]].map(([k, l]) => (
+                    {[["d_nptel","NPTEL / SWAYAM courses qualified"],["d_certs","MOOCs / other certifications"],
+                      ["r_resource","Resource person / conference chair"],["d_fdp","FDPs attended"]].map(([k, l]) => (
                       <div className="cbox" key={k}>
                         <label htmlFor={"c_" + k}>{l}</label>
                         <input id={"c_" + k} className="tnum" type="number" min="0" max="99" step="1" inputMode="numeric" placeholder="0"
@@ -1259,6 +2551,32 @@ function App(){
                     </div>
                   </div>
                 </div>
+
+                <div style={{height:16}}></div>
+
+                <ScoreCard no="4" title="Qualifying in MOOCs through SWAYAM / NPTEL" max={MAX.i4} score={sc.i4} tag="mandatory"
+                           sub="One per academic year carries the full 50 marks.">
+                  <div className="mrows">
+                    <AutoMark label="Qualifying in MOOCs through SWAYAM / NPTEL, one per academic year"
+                              hint={sc.nMooc ? `${sc.nMooc} course${sc.nMooc === 1 ? "" : "s"} declared` : "None declared yet"} value={sc.i4} max={MAX.i4} />
+                  </div>
+                </ScoreCard>
+
+                <ScoreCard no="5" title="Resource person in FDP / Chairing in international conferences" max={MAX.i5} score={sc.i5}
+                           sub="As a resource person in an FDP at a university or highly reputed institution, or chairing a session at an international conference.">
+                  <div className="mrows">
+                    <AutoMark label="Resource person in an FDP, or chairing an international conference"
+                              hint={sc.nRes ? `${sc.nRes} engagement${sc.nRes === 1 ? "" : "s"} declared` : "None declared yet"} value={sc.i5} max={MAX.i5} />
+                  </div>
+                </ScoreCard>
+
+                <ScoreCard no="6" title="Attending FDPs" max={MAX.i6} score={sc.i6} tag="mandatory">
+                  <div className="mrows">
+                    <AutoMark label="Attending Faculty Development Programmes"
+                              hint={sc.nFdp ? `${sc.nFdp} programme${sc.nFdp === 1 ? "" : "s"} declared` : "None declared yet"} value={sc.i6} max={MAX.i6} />
+                  </div>
+                </ScoreCard>
+
                 <div style={{height:26}}></div>
                 {SPECS.filter(s => s.page === "development").map(spec => (
                   <EntryGroup key={spec.id} spec={spec} slots={slotsBySpec[spec.id]} data={state.data}
@@ -1268,18 +2586,203 @@ function App(){
               </section>
             )}
 
-            {/* ---------------- E. Roles ---------------- */}
-            {show("roles") && (
+            {/* ---------------- F. Projects & consultancy · items 7, 8, 13 ---------------- */}
+            {show("projects") && (
               <section>
                 <div className="phead">
-                  <p className="eye">Section E · Items 17 – 18</p>
-                  <h2>Recognition &amp; Departmental Roles</h2>
-                  <p>Awards received during the cycle, and the responsibilities assigned to you by the department.</p>
+                  <p className="eye">Section F · Items 7, 8 and 13 · 140 marks</p>
+                  <h2>Projects &amp; Consultancy</h2>
+                  <p>Sponsored research secured from external funding agencies, consultancy receipts, and projects executed on internal seed funding.</p>
+                </div>
+
+                <div className="card">
+                  <p className="note">Each count creates that many entry cards, and each card needs one supporting document.</p>
+                  <div className="counts">
+                    {[["sp_projects","Sponsored research projects secured"],["cn_jobs","Consultancy jobs"]].map(([k, l]) => (
+                      <div className="cbox" key={k}>
+                        <label htmlFor={"c_" + k}>{l}</label>
+                        <input id={"c_" + k} className="tnum" type="number" min="0" max="99" step="1" inputMode="numeric" placeholder="0"
+                               value={state.counts[k]} onChange={e => setCount(k, e.target.value)} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{height:16}}></div>
+
+                <ScoreCard no="7" title="Sponsored research projects secured from different funding agencies" max={MAX.i7} score={sc.i7}
+                           sub="UGC, DST, AICTE, industry and similar agencies. One in a year: 15 · Two in a year: 25. The item itself carries up to 50, so the HoD may award more than the two printed bands.">
+                  <div className="mrows">
+                    <AutoMark label="From the printed bands"
+                              hint={sc.nSpon ? `${sc.nSpon} project${sc.nSpon === 1 ? "" : "s"} declared` : "None declared yet"} value={sc.i7auto} max={MAX.i7} />
+                    <Mark label="Marks awarded" hint="Leave blank to use the figure above." value={state.awarded.i7} max={MAX.i7} onChange={v => setAwarded("i7", v)} />
+                  </div>
+                </ScoreCard>
+
+                <ScoreCard no="8" title="Consultancy activities" max={MAX.i8} score={sc.i8}
+                           sub="&gt;50k &lt;100k: 10 · ≥100k &lt;150k: 25 · ≥150k &lt;200k: 40 · ≥200k: 50. Worked out from the amounts entered on the consultancy cards below.">
+                  <div className="mrows">
+                    <AutoMark label="Consultancy activities" hint={`Total received: Rs. ${sc.consultTotal.toLocaleString("en-IN")}`} value={sc.i8} max={MAX.i8} />
+                  </div>
+                </ScoreCard>
+
+                <ScoreCard no="13" title="Research project execution through internal seed funding" max={MAX.i13} score={sc.i13}
+                           sub="A minimum of Rupees Two lakhs only. The full 40 marks are awarded once the sanctioned amount reaches Rs. 2,00,000.">
+                  <div className="fgrid">
+                    <Field label="Title of the seed funded project" wide>
+                      <Text value={state.seed.title} placeholder="Title of the project" onChange={v => setSeed("title", v)} />
+                    </Field>
+                    <Field label="Sanctioned amount" suffix="Rs." hint="Minimum Rs. 2,00,000">
+                      <Text type="number" min="0" step="1000" className="tnum" value={state.seed.amount} placeholder="0" onChange={v => setSeed("amount", v)} />
+                    </Field>
+                    <Field label="Sanction order number">
+                      <Text value={state.seed.order} placeholder="Internal sanction reference" onChange={v => setSeed("order", v)} />
+                    </Field>
+                    <Field label="Date of sanction"><Text type="date" value={state.seed.date} onChange={v => setSeed("date", v)} /></Field>
+                    <Field label="Status of execution">
+                      <Select value={state.seed.status} options={["Sanctioned","In progress","Completed","Report submitted"]} onChange={v => setSeed("status", v)} />
+                    </Field>
+                  </div>
+                  <div className="mrows" style={{marginTop:16}}>
+                    <AutoMark label="Research project execution through internal seed funding" hint={sc.seedAmt ? `Sanctioned: Rs. ${sc.seedAmt.toLocaleString("en-IN")}` : "No amount entered yet"} value={sc.i13} max={MAX.i13} />
+                  </div>
+                </ScoreCard>
+
+                <div style={{height:26}}></div>
+                {SPECS.filter(s => s.page === "projects").map(spec => (
+                  <EntryGroup key={spec.id} spec={spec} slots={slotsBySpec[spec.id]} data={state.data}
+                              setEntry={setEntry} docBySlot={docBySlot} flagged={flagged}
+                              goDocuments={() => { setPage("documents"); window.scrollTo({top:0}); }} />
+                ))}
+              </section>
+            )}
+
+            {/* ---------------- G. Supervision & events · items 9, 11 ---------------- */}
+            {show("supervision") && (
+              <section>
+                <div className="phead">
+                  <p className="eye">Section G · Items 9 and 11 · 225 marks</p>
+                  <h2>Supervision &amp; Events</h2>
+                  <p>Students supervised for research and allied academic activities, and educational or co-curricular activities you coordinated.</p>
+                </div>
+
+                <div className="card">
+                  <p className="note">Add one card per event. The category you pick on each card decides the marks it carries.</p>
+                  <div className="counts">
+                    <div className="cbox">
+                      <label htmlFor="c_sv_events">Competitions, exhibitions &amp; contests</label>
+                      <input id="c_sv_events" className="tnum" type="number" min="0" max="99" step="1" inputMode="numeric" placeholder="0"
+                             value={state.counts.sv_events} onChange={e => setCount("sv_events", e.target.value)} />
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{height:16}}></div>
+
+                <ScoreCard no="9" title="Students' supervision for research and allied academic activities" max={MAX.i9} score={sc.i9}
+                           tag="mandatory · min 100"
+                           sub="Hackathons, project exhibitions, coding competitions, paper contests and poster presentations. Capped at 200.">
+                  <div className="mrows">
+                    <div className="mrow head"><span className="ml">Category</span><span className="cap">Marks</span><span className="cap">If prize</span></div>
+                    {SUPERVISION.map(x => {
+                      const hits = (slotsBySpec.supervision || []).filter(sl => (state.data[sl.key] || {}).category === x.l);
+                      return (
+                        <div className="mrow" key={x.k}>
+                          <span className="ml">{x.k} · {x.l}{hits.length ? <i>{hits.length} declared</i> : null}</span>
+                          <span className="cap tnum">{x.base}</span>
+                          <span className="cap tnum">{x.prize === x.base ? "—" : x.prize}</span>
+                        </div>
+                      );
+                    })}
+                    <AutoMark label="Item 9 total" hint={sc.i9raw > MAX.i9 ? `${sc.i9raw} earned, capped at ${MAX.i9}` : "Sum of the cards declared below"} value={sc.i9} max={MAX.i9} />
+                  </div>
+                  {sc.i9 < 100 && <p className="sc-sub" style={{marginTop:14,marginBottom:0}}>A minimum score of 100 under item 9 is mandatory for sanction of increment.</p>}
+                </ScoreCard>
+
+                <ScoreCard no="11" title="Organization of educational / co-curricular activities such as seminars, conferences etc." max={MAX.i11} score={sc.i11}
+                           sub="Enter how many of each you coordinated. The total is capped at 25.">
+                  <div className="mrows">
+                    <div className="mrow head"><span className="ml">Coordinator for</span><span className="cap">Each</span><span className="mi"><em style={{minWidth:78,textAlign:"center"}}>Count</em></span></div>
+                    {ORG_ACTIVITIES.map((x, i) => (
+                      <div className="mrow" key={x.k}>
+                        <span className="ml">{"abcde"[i]} · {x.l}</span>
+                        <span className="cap tnum">{x.m}</span>
+                        <span className="mi">
+                          <input className="tnum" type="number" min="0" max="99" step="1" inputMode="numeric" placeholder="0"
+                                 value={state.events[x.k]} onChange={e => setEvent(x.k, e.target.value)} />
+                        </span>
+                      </div>
+                    ))}
+                    <AutoMark label="Item 11 total" hint={sc.i11raw > MAX.i11 ? `${sc.i11raw} earned, capped at ${MAX.i11}` : null} value={sc.i11} max={MAX.i11} />
+                  </div>
+                </ScoreCard>
+
+                <div style={{height:26}}></div>
+                {SPECS.filter(s => s.page === "supervision").map(spec => (
+                  <EntryGroup key={spec.id} spec={spec} slots={slotsBySpec[spec.id]} data={state.data}
+                              setEntry={setEntry} docBySlot={docBySlot} flagged={flagged}
+                              goDocuments={() => { setPage("documents"); window.scrollTo({top:0}); }} />
+                ))}
+              </section>
+            )}
+
+            {/* ---------------- H. Administration & roles · item 10 ---------------- */}
+            {show("administration") && (
+              <section>
+                <div className="phead">
+                  <p className="eye">Section H · Item 10 · 50 marks</p>
+                  <h2>Administration &amp; Roles</h2>
+                  <p>Educational administration assignments held during the cycle, the nature of each job, and any awards received.</p>
+                </div>
+
+                <ScoreCard no="10" title="Educational administration assignments (Department / College)" max={MAX.i10} score={sc.i10}
+                           sub="Tick every assignment held. Subject to a maximum of 50.">
+                  <div className="mrows">
+                    <div className="mrow head"><span className="ml">Assignment</span><span className="cap">Marks</span><span className="chk" style={{visibility:"hidden"}}></span></div>
+                    {ADMIN_ROLES.map((x, i) => (
+                      <label className="mrow pick" key={x.k}>
+                        <span className="ml">{"abcdefghijk"[i]} · {x.l}</span>
+                        <span className="cap tnum">{x.m}</span>
+                        <input className="chk" type="checkbox" checked={!!state.admin[x.k]} onChange={e => setAdmin(x.k, e.target.checked)} />
+                      </label>
+                    ))}
+                    <AutoMark label="Item 10 total" hint={sc.i10raw > MAX.i10 ? `${sc.i10raw} earned, capped at ${MAX.i10}` : null} value={sc.i10} max={MAX.i10} />
+                  </div>
+                  <div className="fgrid" style={{marginTop:16}}>
+                    <Field label="Any other administrative responsibility — details" wide>
+                      <textarea value={state.adminNote} placeholder="Describe the responsibility ticked under (k), if any."
+                                onChange={e => setState(s => ({...s, adminNote:e.target.value}))} />
+                    </Field>
+                  </div>
+                </ScoreCard>
+
+                <div style={{height:26}}></div>
+
+                <div className="block">
+                  <h3>Nature of the job <span className="chip">item 10</span></h3>
+                  <p className="sub">Duties carried out under each assignment ticked above.</p>
+                  <div className="entries">
+                    {state.roles.map((r, i) => (
+                      <div className="entry" key={r.id}>
+                        <div className="entry-head">
+                          <span className="n"><i className="tnum">{i + 1}</i>Role {i + 1}</span>
+                          {state.roles.length > 1 && <button type="button" className="rowx noprint" onClick={() => delRole(r.id)}>Remove</button>}
+                        </div>
+                        <div className="entry-body">
+                          <div className="fgrid">
+                            <Field label="Role"><Text value={r.role} placeholder="e.g. NBA Coordinator" onChange={v => setRole(r.id, "role", v)} /></Field>
+                            <Field label="Nature of job"><Text value={r.nature} placeholder="Duties and responsibilities" onChange={v => setRole(r.id, "nature", v)} /></Field>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button type="button" className="btn noprint" style={{marginTop:12}} onClick={addRole}>+ Add role</button>
                 </div>
 
                 <div className="block">
-                  <h3>Awards &amp; recognitions <span className="chip">item 17</span><span className="chip">optional</span></h3>
-                  <p className="sub">Add a card for each award. Attach proof in section F if you have it.</p>
+                  <h3>Awards &amp; recognitions <span className="chip">optional</span></h3>
+                  <p className="sub">Not scored on the appraisal form, but recorded with the appraisal. Attach proof in section J if you have it.</p>
                   {!state.awards.length && <div className="none">No awards added yet.</div>}
                   <div className="entries">
                     {state.awards.map((a, i) => (
@@ -1301,36 +2804,76 @@ function App(){
                   </div>
                   <button type="button" className="btn noprint" style={{marginTop:12}} onClick={addAward}>+ Add award</button>
                 </div>
-
-                <div className="block">
-                  <h3>Other departmental responsibilities <span className="chip">item 18</span></h3>
-                  <p className="sub">Roles assigned by the department and the nature of the job.</p>
-                  <div className="entries">
-                    {state.roles.map((r, i) => (
-                      <div className="entry" key={r.id}>
-                        <div className="entry-head">
-                          <span className="n"><i className="tnum">{i + 1}</i>Role {i + 1}</span>
-                          {state.roles.length > 1 && <button type="button" className="rowx noprint" onClick={() => delRole(r.id)}>Remove</button>}
-                        </div>
-                        <div className="entry-body">
-                          <div className="fgrid">
-                            <Field label="Role"><Text value={r.role} placeholder="e.g. NBA Coordinator" onChange={v => setRole(r.id, "role", v)} /></Field>
-                            <Field label="Nature of job"><Text value={r.nature} placeholder="Duties and responsibilities" onChange={v => setRole(r.id, "nature", v)} /></Field>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <button type="button" className="btn noprint" style={{marginTop:12}} onClick={addRole}>+ Add role</button>
-                </div>
               </section>
             )}
 
-            {/* ---------------- F. Documents ---------------- */}
+            {/* ---------------- I. Ratings & feedback · items 12, 14 – 16 ---------------- */}
+            {show("ratings") && (
+              <section>
+                <div className="phead">
+                  <p className="eye">Section I · Items 12, 14, 15 and 16 · 160 marks</p>
+                  <h2>Ratings &amp; Feedback</h2>
+                  <p>Students' ratings on TLP, and the ratings awarded by the Group Head, the Head of the Department and the Head of the Institution.</p>
+                </div>
+
+                <ScoreCard no="12" title="Students' ratings on TLP" max={MAX.i12} score={sc.i12}
+                           sub="Enter the two ratings on the 5-point scale; the marks follow the published bands.">
+                  <div className="fgrid">
+                    <Field label="Feedback rating" hint="≥4.5: 25 · ≥4 &lt;4.5: 20 · ≥3.5 &lt;4: 15 · ≥3 &lt;3.5: 10 · ≥2.5 &lt;3: 5">
+                      <Text type="number" min="0" max="5" step="0.01" className="tnum" value={state.ratings.feedback} placeholder="0.00" onChange={v => setRating("feedback", v)} />
+                    </Field>
+                    <Field label="Course End Survey rating" hint="≥4.5: 10 · ≥4 &lt;4.5: 8 · ≥3.5 &lt;4: 6 · ≥3 &lt;3.5: 4 · ≥2.5 &lt;3: 2">
+                      <Text type="number" min="0" max="5" step="0.01" className="tnum" value={state.ratings.ces} placeholder="0.00" onChange={v => setRating("ces", v)} />
+                    </Field>
+                  </div>
+                  <div className="mrows" style={{marginTop:16}}>
+                    <AutoMark label="Feedback"           hint={state.ratings.feedback ? `Rating ${state.ratings.feedback} of 5` : null} value={sc.i12a} max={MAX.i12a} />
+                    <AutoMark label="Course End Survey"  hint={state.ratings.ces ? `Rating ${state.ratings.ces} of 5` : null}      value={sc.i12b} max={MAX.i12b} />
+                  </div>
+                </ScoreCard>
+
+                <ScoreCard no="14" title="Group Head's rating" max={MAX.i14} score={sc.i14} tag="filled by the Group Head">
+                  <div className="mrows">
+                    <Mark label="Willingness to learn" value={state.ratings.gh_learn} max={15} onChange={v => setRating("gh_learn", v)} />
+                    <div className="mrow head"><span className="ml">Participation in group activities</span><span className="cap">35</span></div>
+                    {GH_RATING.filter(x => x.k !== "learn").map(x => (
+                      <Mark key={x.k} label={"· " + x.l} value={state.ratings["gh_" + x.k]} max={x.m} onChange={v => setRating("gh_" + x.k, v)} />
+                    ))}
+                  </div>
+                  <div className="fgrid" style={{marginTop:16}}>
+                    <Field label="Group Head"><Text value={state.ratings.gh_by} placeholder="Name of the Group Head" onChange={v => setRating("gh_by", v)} /></Field>
+                  </div>
+                </ScoreCard>
+
+                <ScoreCard no="15" title="HoD's rating" max={MAX.i15} score={sc.i15} tag="filled by the HoD"
+                           sub="The ten components below add up to 65 on the printed form; the item itself is capped at 50.">
+                  <div className="mrows">
+                    {HOD_RATING.map((x, i) => (
+                      <Mark key={x.k} label={"abcdefghij"[i] + " · " + x.l} value={state.ratings["hod_" + x.k]} max={x.m} onChange={v => setRating("hod_" + x.k, v)} />
+                    ))}
+                    <AutoMark label="Item 15 total" hint={sc.i15raw > MAX.i15 ? `${sc.i15raw} awarded, capped at ${MAX.i15}` : null} value={sc.i15} max={MAX.i15} />
+                  </div>
+                  <div className="fgrid" style={{marginTop:16}}>
+                    <Field label="Head of the Department"><Text value={state.ratings.hod_by} placeholder="Name of the HoD" onChange={v => setRating("hod_by", v)} /></Field>
+                  </div>
+                </ScoreCard>
+
+                <ScoreCard no="16" title="Rating by the Head of the Institution" max={MAX.i16} score={sc.i16} tag="filled by the Principal">
+                  <div className="mrows">
+                    <Mark label="Rating by the Head of the Institution" value={state.ratings.hoi} max={MAX.i16} onChange={v => setRating("hoi", v)} />
+                  </div>
+                  <div className="fgrid" style={{marginTop:16}}>
+                    <Field label="Head of the Institution"><Text value={state.ratings.hoi_by} placeholder="Name of the Principal / Director" onChange={v => setRating("hoi_by", v)} /></Field>
+                  </div>
+                </ScoreCard>
+              </section>
+            )}
+
+            {/* ---------------- J. Documents ---------------- */}
             {show("documents") && (
               <section>
                 <div className="phead">
-                  <p className="eye">Section F</p>
+                  <p className="eye">Section J · Supporting evidence</p>
                   <h2>Documents</h2>
                   <p>Drop every certificate and proof here in one go. Files matching an entry title are assigned automatically — fix the rest from the list below.</p>
                 </div>
@@ -1403,18 +2946,94 @@ function App(){
               </section>
             )}
 
-            {/* ---------------- G. Declaration ---------------- */}
+            {/* ---------------- K. Score summary & declaration ---------------- */}
             {show("declaration") && (
               <section>
                 <div className="phead">
-                  <p className="eye">Section G</p>
-                  <h2>Declaration &amp; Submit</h2>
-                  <p>Add anything the form did not cover, confirm the declaration, then review and print.</p>
+                  <p className="eye">Section K · Grand total · 1000 marks</p>
+                  <h2>Score Summary &amp; Submit</h2>
+                  <p>The sixteen items of the appraisal form, the grand total, and the minimum required for sanction of increment.</p>
                 </div>
+
+                <div className="gt">
+                  <div className="gt-top">
+                    <div>
+                      <p className="eye" style={{margin:"0 0 6px"}}>Grand total</p>
+                      <div className="gt-score tnum">{sc.grand}<span> / {MAX.total}</span></div>
+                    </div>
+                    <div className="gt-note">
+                      {sc.required
+                        ? <React.Fragment><b>{state.profile.designation}</b>Minimum required: {sc.required}</React.Fragment>
+                        : <React.Fragment><b>Select a designation</b>to see the minimum required</React.Fragment>}
+                    </div>
+                  </div>
+                  <div className="gt-bar">
+                    <i style={{width:Math.min(100, sc.grand / MAX.total * 100) + "%"}}></i>
+                    {sc.required > 0 && <span className="mk" style={{left:(sc.required / MAX.total * 100) + "%"}}></span>}
+                  </div>
+                  <div className="gt-legend">
+                    <span>0</span>
+                    {sc.required > 0 && <span>minimum {sc.required}</span>}
+                    <span>{MAX.total}</span>
+                  </div>
+
+                  {sc.required > 0 && (
+                    <div className={"verdict " + (sc.eligible ? "ok" : "no")}>
+                      {sc.eligible
+                        ? `Eligible — ${sc.grand} of ${MAX.total}, above the ${sc.required} required for a ${state.profile.designation}, with every mandatory item met.`
+                        : sc.grand < sc.required
+                          ? `${sc.required - sc.grand} more mark${sc.required - sc.grand === 1 ? "" : "s"} needed to reach the ${sc.required} required for a ${state.profile.designation}.`
+                          : `The total clears ${sc.required}, but ${sc.gates.filter(g => !g.ok).length} mandatory item${sc.gates.filter(g => !g.ok).length === 1 ? " is" : "s are"} not yet met.`}
+                    </div>
+                  )}
+                </div>
+
+                <div className="card">
+                  <h3 className="ch">Item-wise score</h3>
+                  <p className="sub">Every item of the printed appraisal form, in order.</p>
+                  <div className="ledger">
+                    <div className="lrow hdr"><span className="li"><span>#</span></span><span className="lt"><span>Item</span></span><span className="lm"><span>Score</span></span><span className="lx"><span>Max</span></span></div>
+                    {sc.items.map(it => (
+                      <div className="lrow" key={it.n}>
+                        <span className="li tnum">{it.n}</span>
+                        <span className="lt">{it.label}</span>
+                        <span className="lm tnum">{it.got}</span>
+                        <span className="lx tnum">{it.max}</span>
+                      </div>
+                    ))}
+                    <div className="lrow total"><span className="li"></span><span className="lt">Grand Total</span><span className="lm tnum">{sc.grand}</span><span className="lx tnum">{MAX.total}</span></div>
+                  </div>
+                </div>
+
+                <div className="card">
+                  <h3 className="ch">Mandatory for sanction of increment</h3>
+                  <p className="sub">Point numbers 1.c, 3 (minimum score of 50), 4, 6 and 9 (minimum score of 100), subject to the minimum overall score.</p>
+                  <div className="gate">
+                    {sc.gates.map((g, i) => (
+                      <div key={i} className={g.ok ? "yes" : "no"}>
+                        <span className="mk">{g.ok ? "✓" : "✕"}</span>
+                        <span>{g.l} <em style={{fontStyle:"normal",color:"var(--ink-3)"}}>— {g.need}</em></span>
+                        {!g.ok && g.page !== page && (
+                          <button type="button" className="btn btn-quiet btn-sm noprint" style={{marginLeft:"auto"}}
+                                  onClick={() => { setPage(g.page); window.scrollTo({top:0}); }}>Go</button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="ledger" style={{marginTop:20}}>
+                    <div className="lrow hdr"><span className="lt"><span>Minimum marks required for</span></span><span className="lm"><span>Marks</span></span></div>
+                    {MIN_REQUIRED.map(x => (
+                      <div className={"lrow" + (x.m === sc.required ? " total" : "")} key={x.d}>
+                        <span className="lt">{x.d}</span><span className="lm tnum">{x.m}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="card">
                   <div className="fgrid">
                     <Field label="Any other information (optional)" wide>
-                      <textarea value={state.remarks} placeholder="Sponsored projects, consultancy, memberships of professional bodies, student outcomes, and so on."
+                      <textarea value={state.remarks} placeholder="Memberships of professional bodies, student outcomes, and anything the sixteen items above did not cover."
                                 onChange={e => setState(s => ({...s, remarks:e.target.value}))} />
                     </Field>
                   </div>
@@ -1424,15 +3043,111 @@ function App(){
                   </label>
                   <div className="signs">
                     <div className="sign">Signature of the Faculty</div>
-                    <div className="sign">Head of the Department</div>
-                    <div className="sign">Software Development Cell</div>
+                    <div className="sign">Signature of the HoD</div>
+                    <div className="sign">Signature of the Principal</div>
+                    <div className="sign">Signature of the Director</div>
                   </div>
                 </div>
 
                 {review && (
                   <div className="card" style={{marginTop:16}}>
                     <h3 className="ch" style={{marginBottom:16}}>Submission summary</h3>
-                    <Review state={state} service={service} overall={overall} slots={allSlots} docBySlot={docBySlot} unassigned={unassigned} />
+                    <Review state={state} service={service} overall={overall} slots={allSlots} docBySlot={docBySlot} unassigned={unassigned} sc={sc} />
+                  </div>
+                )}
+
+                {review && !printing && (
+                  <div className="card sendpanel noprint">
+                    <h3 className="ch">Send to the SDC</h3>
+
+                    {!backendOn && (
+                      <p className="sub" style={{margin:0}}>
+                        The backend is not configured on this copy of the form
+                        {typeof PBAS !== "undefined" && PBAS.missing.length
+                          ? " \u2014 still to be filled in: " + PBAS.missing.join(", ") + "."
+                          : "."}{" "}
+                        Use <b>Print</b> or <b>Export</b> to hand the appraisal in, and see
+                        backend/ENTRA-SETUP.md.
+                      </p>
+                    )}
+
+                    {backendOn && !user && (
+                      <React.Fragment>
+                        <p className="sub" style={{margin:0}}>
+                          Sign in with your @{PBAS.allowedDomain} account. Your submission is
+                          recorded against that address.
+                        </p>
+                        <div className="sendrow">
+                          <button type="button" className="btn btn-primary" onClick={doSignIn} disabled={authBusy}>
+                            {authBusy ? "Signing in\u2026" : "Sign in to submit"}
+                          </button>
+                        </div>
+                      </React.Fragment>
+                    )}
+
+                    {backendOn && user && (!send || send.phase === "error") && (
+                      <React.Fragment>
+                        <p className="sub" style={{margin:0}}>
+                          Submitting as <b>{user.email}</b>. This uploads{" "}
+                          {state.docs.filter(d => filesRef.current[d.id]).length} certificate
+                          {state.docs.filter(d => filesRef.current[d.id]).length === 1 ? "" : "s"} and
+                          the completed form, and records a grand total of{" "}
+                          <b className="tnum">{round2(sc.grand)}</b> out of {MAX.total}.
+                        </p>
+                        {send && send.phase === "error" && (
+                          <div className="issues" style={{marginTop:16,marginBottom:0}}>
+                            <h4>Submission failed</h4>
+                            <ul><li><span>{send.error}</span></li></ul>
+                          </div>
+                        )}
+                        <div className="sendrow">
+                          <button type="button" className="btn btn-primary btn-lg" onClick={sendToSDC}>
+                            {send && send.phase === "error" ? "Try again" : "Submit to the SDC"}
+                          </button>
+                          <div className="sp"></div>
+                          <button type="button" className="btn btn-sm" onClick={exportJSON}>Keep a copy</button>
+                        </div>
+                      </React.Fragment>
+                    )}
+
+                    {backendOn && send && send.phase === "sending" && (
+                      <React.Fragment>
+                        <p className="sub" style={{margin:0}}>Uploading. Leave this tab open until it finishes.</p>
+                        <div className="bar tall" style={{marginTop:14}}>
+                          <i style={{width:(send.total ? send.done / send.total * 100 : 0) + "%"}}></i>
+                        </div>
+                        <p className="steps">{send.done} of {send.total} &middot; {send.label}</p>
+                      </React.Fragment>
+                    )}
+
+                    {backendOn && send && send.phase === "done" && (
+                      <React.Fragment>
+                        <div className="okbox" style={{marginBottom:0}}>
+                          Submitted. {send.result.uploaded} certificate
+                          {send.result.uploaded === 1 ? "" : "s"} and the completed form are with the SDC.
+                        </div>
+                        <p className="receipt">
+                          Filed under <code>{send.result.folderPath}</code>
+                          {send.result.itemId ? <React.Fragment> &middot; reference <code>{send.result.itemId}</code></React.Fragment> : null}.
+                          {send.result.jsonUrl && <React.Fragment>{" "}
+                            <a href={send.result.jsonUrl} target="_blank" rel="noopener noreferrer">Open in SharePoint</a>.
+                          </React.Fragment>}
+                        </p>
+                        {send.result.failed.length > 0 && (
+                          <p className="fail">
+                            {send.result.failed.length} certificate
+                            {send.result.failed.length === 1 ? "" : "s"} did not upload
+                            ({send.result.failed.map(f => f.name).join(", ")}). The submission was
+                            recorded without {send.result.failed.length === 1 ? "it" : "them"} &mdash;
+                            tell the SDC, or submit again once the file is in order.
+                          </p>
+                        )}
+                        <div className="sendrow">
+                          <button type="button" className="btn" onClick={exportJSON}>Download a copy</button>
+                          <button type="button" className="btn" onClick={() => setPrinting(true)}>Print</button>
+                        </div>
+                      </React.Fragment>
+                    )}
                   </div>
                 )}
               </section>
@@ -1479,7 +3194,7 @@ function Row({k, v}){
   const blank = v === "" || v === null || v === undefined;
   return <div className="rrow"><span className="k">{k}</span><span className={"v" + (blank ? " none" : "")}>{blank ? "not provided" : v}</span></div>;
 }
-function Review({state, service, overall, slots, docBySlot, unassigned}){
+function Review({state, service, overall, slots, docBySlot, unassigned, sc}){
   const p = state.profile;
   const bySpec = {};
   slots.forEach(sl => { (bySpec[sl.spec.id] = bySpec[sl.spec.id] || []).push(sl); });
@@ -1492,13 +3207,29 @@ function Review({state, service, overall, slots, docBySlot, unassigned}){
         <Row k="Experience in GCET" v={service} /><Row k="Overall experience" v={overall + " years"} />
       </div>
       <div className="rsec">
-        <h5>B · Teaching load</h5>
-        {["s1","s2"].map(s => [1,2,3].map(i => (
-          <React.Fragment key={s + i}>
-            <Row k={`${s === "s1" ? "Sem I" : "Sem II"} · Subject ${i}`} v={state.load[`${s}_sub${i}`]} />
-            <Row k={`${s === "s1" ? "Sem I" : "Sem II"} · Lab ${i}`} v={state.load[`${s}_lab${i}`]} />
-          </React.Fragment>
-        )))}
+        <h5>Item-wise score</h5>
+        {sc.items.map(it => <Row key={it.n} k={`${it.n}. ${it.label}`} v={`${it.got} / ${it.max}`} />)}
+        <Row k="Grand Total" v={`${sc.grand} / ${MAX.total}`} />
+        <Row k="Minimum required" v={sc.required ? String(sc.required) : ""} />
+        <Row k="Eligible for increment" v={sc.required ? (sc.eligible ? "Yes" : "No") : ""} />
+      </div>
+      <div className="rsec">
+        <h5>B · Classroom teaching (item 1)</h5>
+        {sc.courses.length
+          ? sc.courses.map((c, i) => <Row key={i} k={`${c.sem} · ${c.title}`} v={`${c.hours || 0} hrs · ${c.pass || 0}%`} />)
+          : <Row k="Theory courses" v="" />}
+        {["s1","s2"].map(s => [1,2,3].map(i => state.load[`${s}_lab${i}`]
+          ? <Row key={s + i} k={`${s === "s1" ? "Sem I" : "Sem II"} · Lab ${i}`} v={`${state.load[`${s}_lab${i}`]} · ${state.load[`${s}_lab${i}_hrs`] || 0} hrs`} />
+          : null))}
+        <Row k="1.c PBL project" v={state.teaching.c_title} />
+        <Row k="1.c Presented at" v={[state.teaching.c_event, state.teaching.c_venue].filter(Boolean).join(" · ")} />
+        <Row k="1.c Project work" v={state.teaching.c_hours ? `${state.teaching.c_hours} hrs · ${state.teaching.c_cases || 0} case studies` : ""} />
+      </div>
+      <div className="rsec">
+        <h5>C · Mentoring (item 2)</h5>
+        <Row k="Track" v={mentorMode(state) === "faculty" ? "Faculty mentoring" : "Student mentoring"} />
+        <Row k={mentorMode(state) === "faculty" ? "Faculty mentored" : "Students mentored"} v={state.mentoring.mentees} />
+        <Row k="Marks" v={`${sc.i2} / ${MAX.i2}`} />
       </div>
       {SPECS.map(spec => (
         <div className="rsec" key={spec.id}>
@@ -1513,12 +3244,36 @@ function Review({state, service, overall, slots, docBySlot, unassigned}){
         </div>
       ))}
       <div className="rsec">
-        <h5>E · Awards &amp; roles</h5>
+        <h5>F · Projects &amp; consultancy (items 7, 8, 13)</h5>
+        <Row k="Sponsored projects secured" v={sc.nSpon ? `${sc.nSpon} · ${sc.i7} marks` : ""} />
+        <Row k="Consultancy received" v={sc.consultTotal ? `Rs. ${sc.consultTotal.toLocaleString("en-IN")} · ${sc.i8} marks` : ""} />
+        <Row k="Internal seed funding" v={state.seed.title ? `${state.seed.title} · Rs. ${n(state.seed.amount).toLocaleString("en-IN")}` : ""} />
+      </div>
+      <div className="rsec">
+        <h5>G · Supervision &amp; events (items 9, 11)</h5>
+        <Row k="Item 9 — supervision" v={`${sc.i9} / ${MAX.i9}`} />
+        {ORG_ACTIVITIES.filter(x => cnt(state.events[x.k])).map(x => <Row key={x.k} k={x.l} v={`${cnt(state.events[x.k])} × ${x.m}`} />)}
+        <Row k="Item 11 — organization" v={`${sc.i11} / ${MAX.i11}`} />
+      </div>
+      <div className="rsec">
+        <h5>I · Ratings (items 12, 14 – 16)</h5>
+        <Row k="Students' feedback" v={state.ratings.feedback ? `${state.ratings.feedback} / 5 · ${sc.i12a} marks` : ""} />
+        <Row k="Course End Survey" v={state.ratings.ces ? `${state.ratings.ces} / 5 · ${sc.i12b} marks` : ""} />
+        <Row k="Group Head's rating" v={`${sc.i14} / ${MAX.i14}`} />
+        <Row k="HoD's rating" v={`${sc.i15} / ${MAX.i15}`} />
+        <Row k="Head of the Institution" v={`${sc.i16} / ${MAX.i16}`} />
+      </div>
+      <div className="rsec">
+        <h5>H · Administration, awards &amp; roles (item 10)</h5>
+        {ADMIN_ROLES.filter(x => state.admin[x.k]).length
+          ? ADMIN_ROLES.filter(x => state.admin[x.k]).map(x => <Row key={x.k} k={x.l} v={String(x.m)} />)
+          : <Row k="Administration assignments" v="" />}
+        <Row k="Item 10 total" v={`${sc.i10} / ${MAX.i10}`} />
         {state.awards.length ? state.awards.map((a, i) => <Row key={a.id} k={`Award ${i + 1}. ${a.title || "Untitled"}`} v={[a.by, a.level, fmtDate(a.date)].filter(Boolean).join(" · ")} />) : <Row k="Awards" v="" />}
         {state.roles.filter(r => r.role).length ? state.roles.filter(r => r.role).map((r, i) => <Row key={r.id} k={`Role ${i + 1}. ${r.role}`} v={r.nature} />) : <Row k="Roles" v="" />}
       </div>
       <div className="rsec">
-        <h5>F · Documents</h5>
+        <h5>J · Documents</h5>
         <Row k="Attached to entries" v={`${slots.filter(s => docBySlot[s.key] && !docBySlot[s.key].stale).length} / ${slots.length}`} />
         <Row k="Other documents" v={unassigned.length ? String(unassigned.length) : ""} />
         <Row k="Credits earned" v={state.counts.credits} />

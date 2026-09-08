@@ -1,0 +1,11 @@
+{
+  "name": "gcet-pbas-backend-checks",
+  "private": true,
+  "description": "Offline checks for the PBAS backend module. No tenant, no network.",
+  "scripts": {
+    "check": "node parse-check.js && node smoke-test.js"
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.24.0"
+  }
+}
