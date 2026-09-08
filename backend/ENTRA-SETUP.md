@@ -17,9 +17,12 @@ Browser ──► Entra ID (MSAL)        sign in as name@gcet.edu.in
         └─► the user's OneDrive    their own half-finished draft, private to them
 ```
 
-`backend/SETUP.md` describes an earlier Firebase + Google Apps Script design.
-It does not apply — Google sign-in cannot authenticate a Microsoft account, and
-no Google account should own an institutional system. Kept only for reference.
+> **This is not what currently ships.** The form is wired to the Google Apps
+> Script backend in `GOOGLE-SETUP.md`, which needs no admin approval but leaves
+> the endpoint open and unauthenticated. This document is the upgrade path: it
+> gives every submission a verified `@gcet.edu.in` identity, at the cost of
+> needing tenant-admin consent. Everything below is built and tested — only the
+> five ids and the client module swap are outstanding.
 
 ---
 

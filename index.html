@@ -430,18 +430,6 @@
   .okbox{border:1px solid color-mix(in srgb,var(--ok) 42%,var(--line));background:var(--ok-soft);border-radius:var(--r-lg);padding:16px 20px;margin-bottom:20px;font-size:13.5px;color:var(--ok);font-weight:500}
 
   /* ============ backend: account, drafts, submission ============ */
-  .acct{
-    display:flex;align-items:center;gap:9px;flex:none;padding:5px 11px;
-    border:1px solid var(--line-2);border-radius:999px;background:var(--surface-2);
-    font-size:12px;color:var(--ink-2);max-width:290px;
-  }
-  .acct .who{display:flex;flex-direction:column;line-height:1.25;min-width:0}
-  .acct .who b{font-size:12px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .acct .who span{font-size:10.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .acct .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:none}
-  .acct button{border:0;background:transparent;color:var(--ink-3);font-size:11px;font-weight:600;text-decoration:underline;text-underline-offset:2px;padding:0;flex:none}
-  .acct button:hover{color:var(--danger)}
-
   .cloudpill{flex:none;font-size:11px;color:var(--ink-3);padding:0 2px;white-space:nowrap}
   .cloudpill.failed{color:var(--warn)}
 
@@ -631,56 +619,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
 
 <!-- =========================================================
-     Microsoft Entra ID + SharePoint backend
-     Sign-in, submission, evidence upload and server-side drafts.
-     Everything below is plain JS (no JSX) so Babel never touches it.
+     Google Apps Script backend
+     Submission, certificate upload and drafts. Plain JS, no JSX,
+     so Babel never touches it.
      ========================================================= -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/msal-browser/3.28.1/msal-browser.min.js"></script>
 <script>
 /* ---------------------------------------------------------
-   1. CONFIGURATION  —  the only part the SDC has to edit.
+   1. CONFIGURATION — the only line the SDC has to edit.
 
-   Fill these in from backend/ENTRA-SETUP.md once the tenant
-   admin has registered the app and the SharePoint site exists.
-   While any value still reads PASTE_..., the form runs exactly
-   as it did before: local drafts, print and export, no network.
+   Paste the Apps Script /exec URL from backend/GOOGLE-SETUP.md.
+   While it still reads PASTE_..., the form runs exactly as it did
+   before: local draft, print and export, and no network.
    --------------------------------------------------------- */
 window.PBAS_CONFIG = {
-  tenantId : "PASTE_TENANT_ID",
-  clientId : "PASTE_CLIENT_ID",
-  siteId   : "PASTE_SITE_ID",     // hostname,siteCollectionId,webId
-  listId   : "PASTE_LIST_ID",     // the "PBAS Submissions" list
-  driveId  : "PASTE_DRIVE_ID",    // the "PBAS Evidence" document library
-  allowedDomain : "gcet.edu.in",
-  cycle         : "2025-26",
-  evidenceRoot  : "PBAS 2025-26",
-  draftFile     : "pbas-draft-2025-26.json"
+  endpoint : "PASTE_APPS_SCRIPT_EXEC_URL",
+  cycle    : "2025-26",
+  maxMB    : 5,
+  allowedTypes : ["application/pdf", "image/jpeg", "image/png", "image/webp"]
 };
 
 (function(){
   "use strict";
 
   var CFG = window.PBAS_CONFIG;
-  var GRAPH = "https://graph.microsoft.com/v1.0";
-
-  /* Scopes.
-     Files.ReadWrite.AppFolder keeps each faculty member's draft in their own
-     OneDrive, in a folder only this app can see — no admin consent needed.
-     Sites.ReadWrite.All is what writes the submission and the certificates,
-     and it does need admin consent. */
-  var SCOPES = ["User.Read", "Sites.ReadWrite.All", "Files.ReadWrite.AppFolder"];
 
   function unset(v){ return !v || String(v).indexOf("PASTE_") === 0; }
-
-  var configured = !unset(CFG.tenantId) && !unset(CFG.clientId) &&
-                   !unset(CFG.siteId)   && !unset(CFG.listId)   && !unset(CFG.driveId);
-
-  var missing = ["tenantId","clientId","siteId","listId","driveId"].filter(function(k){ return unset(CFG[k]); });
-
-  var msalReady = typeof msal !== "undefined";
-  var pca = null, account = null, initErr = null;
-
-  /* ---------- helpers ---------- */
+  var configured = !unset(CFG.endpoint);
 
   function err(message, detail){
     var e = new Error(message);
@@ -688,308 +652,143 @@ window.PBAS_CONFIG = {
     return e;
   }
 
-  /* SharePoint rejects these in file and folder names, and trims trailing dots. */
-  function safeName(s, fallback){
-    var out = String(s == null ? "" : s)
-      .replace(/[~"#%&*:<>?\/\\{|}]+/g, " ")
-      .replace(/\s+/g, " ")
-      .replace(/^[.\s]+|[.\s]+$/g, "")
-      .slice(0, 120);
-    return out || (fallback || "unnamed");
-  }
-
-  function encodePath(path){
-    return path.split("/").map(encodeURIComponent).join("/");
-  }
-
-  /* ---------- auth ---------- */
-
-  function init(){
-    if(initErr) return Promise.reject(initErr);
-    if(pca) return Promise.resolve(pca);
-    if(!configured){
-      initErr = err("The backend is not configured yet. Still to fill in: " + missing.join(", ") + ".");
-      return Promise.reject(initErr);
-    }
-    if(!msalReady){
-      initErr = err("The Microsoft sign-in library did not load. Check the network connection and reload the page.");
-      return Promise.reject(initErr);
-    }
-    pca = new msal.PublicClientApplication({
-      auth: {
-        clientId: CFG.clientId,
-        authority: "https://login.microsoftonline.com/" + CFG.tenantId,
-        redirectUri: window.location.origin + window.location.pathname
-      },
-      cache: { cacheLocation: "localStorage", storeAuthStateInCookie: false }
-    });
-    return pca.initialize().then(function(){
-      return pca.handleRedirectPromise();
+  /* Posted as text/plain on purpose. Apps Script cannot answer a CORS
+     preflight, and text/plain keeps the request "simple" so the browser
+     never sends one. */
+  function post(body){
+    if(!configured) return Promise.reject(err("The backend is not configured yet — the Apps Script URL is still a placeholder."));
+    return fetch(CFG.endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(body),
+      redirect: "follow"
     }).then(function(res){
-      if(res && res.account) account = res.account;
-      else {
-        var all = pca.getAllAccounts();
-        if(all.length) account = all[0];
-      }
-      if(account) pca.setActiveAccount(account);
-      return pca;
-    });
-  }
-
-  function emailOf(acc){
-    if(!acc) return "";
-    return String(acc.username || (acc.idTokenClaims && (acc.idTokenClaims.preferred_username || acc.idTokenClaims.email)) || "").toLowerCase();
-  }
-
-  function checkDomain(acc){
-    var mail = emailOf(acc);
-    var dom = String(CFG.allowedDomain || "").toLowerCase();
-    if(dom && mail.slice(-(dom.length + 1)) !== "@" + dom){
-      return err("Signed in as " + (mail || "an unknown account") + ". This form only accepts @" + dom + " accounts.");
-    }
-    return null;
-  }
-
-  function signIn(){
-    return init().then(function(){
-      return pca.loginPopup({ scopes: SCOPES, prompt: "select_account" });
-    }).then(function(res){
-      var bad = checkDomain(res.account);
-      if(bad){
-        return pca.logoutPopup({ account: res.account }).catch(function(){}).then(function(){
-          account = null;
-          throw bad;
-        });
-      }
-      account = res.account;
-      pca.setActiveAccount(account);
-      return account;
-    });
-  }
-
-  function signOut(){
-    if(!pca || !account) { account = null; return Promise.resolve(); }
-    var a = account;
-    account = null;
-    return pca.logoutPopup({ account: a }).catch(function(){});
-  }
-
-  function token(){
-    return init().then(function(){
-      if(!account) throw err("Sign in with your @" + CFG.allowedDomain + " account first.");
-      return pca.acquireTokenSilent({ scopes: SCOPES, account: account })
-        .catch(function(e){
-          if(typeof msal !== "undefined" && e instanceof msal.InteractionRequiredAuthError)
-            return pca.acquireTokenPopup({ scopes: SCOPES, account: account });
-          throw e;
-        });
-    }).then(function(r){ return r.accessToken; });
-  }
-
-  /* ---------- Graph ---------- */
-
-  function graph(path, opts){
-    opts = opts || {};
-    return token().then(function(tok){
-      var headers = opts.headers || {};
-      headers.Authorization = "Bearer " + tok;
-      if(opts.json !== undefined){
-        headers["Content-Type"] = "application/json";
-        opts.body = JSON.stringify(opts.json);
-      }
-      return fetch(path.indexOf("http") === 0 ? path : GRAPH + path, {
-        method: opts.method || "GET",
-        headers: headers,
-        body: opts.body
-      });
-    }).then(function(res){
-      if(res.status === 204) return null;
       return res.text().then(function(text){
-        var data = null;
-        try { data = text ? JSON.parse(text) : null; } catch(e){ data = { raw: text }; }
-        if(!res.ok){
-          var m = (data && data.error && data.error.message) || res.statusText || ("HTTP " + res.status);
-          if(res.status === 403)
-            m = "Microsoft refused the request (403). The most likely cause is that the tenant admin has not granted consent for Sites.ReadWrite.All, or this account has no write access to the PBAS site. Details: " + m;
-          if(res.status === 404)
-            m = "Not found (404) — check siteId, listId and driveId in PBAS_CONFIG. Details: " + m;
-          throw err(m, { status: res.status, body: data });
+        var data;
+        try { data = JSON.parse(text); }
+        catch(e){
+          /* Apps Script serves an HTML error page when the deployment is
+             wrong — far more useful to say so than to show raw markup. */
+          if(/<html/i.test(text))
+            throw err("The endpoint returned a web page instead of data. The deployment is probably set to “Only myself” rather than “Anyone”, or the URL is the /dev one instead of /exec.");
+          throw err("The endpoint returned something unreadable: " + text.slice(0, 120));
         }
+        if(!data.ok) throw err(data.error || "The endpoint refused the request.");
         return data;
       });
+    }).catch(function(e){
+      if(e instanceof TypeError)
+        throw err("Could not reach the endpoint. Check the internet connection, and that the Apps Script deployment is set to “Anyone”.");
+      throw e;
     });
   }
 
-  /* ---------- evidence library ---------- */
-
-  /* Create each level in turn. A folder that already exists comes back 409,
-     which is the expected case on every submission after the first. */
-  function ensureFolder(segments){
-    var made = Promise.resolve();
-    segments.forEach(function(seg, i){
-      made = made.then(function(){
-        var parent = segments.slice(0, i).join("/");
-        var url = parent
-          ? "/drives/" + CFG.driveId + "/root:/" + encodePath(parent) + ":/children"
-          : "/drives/" + CFG.driveId + "/root/children";
-        return graph(url, {
-          method: "POST",
-          json: { name: seg, folder: {}, "@microsoft.graph.conflictBehavior": "fail" }
-        }).catch(function(e){
-          if(e.detail && e.detail.status === 409) return null;  /* already there */
-          throw e;
-        });
-      });
-    });
-    return made.then(function(){ return segments.join("/"); });
-  }
-
-  function uploadFile(folderPath, name, blob){
-    var path = folderPath + "/" + name;
-    return graph("/drives/" + CFG.driveId + "/root:/" + encodePath(path) + ":/content?@microsoft.graph.conflictBehavior=replace", {
-      method: "PUT",
-      headers: { "Content-Type": blob.type || "application/octet-stream" },
-      body: blob
+  function readBase64(file){
+    return new Promise(function(resolve, reject){
+      var r = new FileReader();
+      r.onload = function(){
+        var s = String(r.result);
+        resolve(s.slice(s.indexOf(",") + 1));   /* strip the data: prefix */
+      };
+      r.onerror = function(){ reject(err("Could not read " + file.name + ".")); };
+      r.readAsDataURL(file);
     });
   }
 
-  /* ---------- submit ---------- */
-
-  /* payload  the JSON the form already builds for Export
-     files    [{name, file}] — one per attached certificate
-     onStep   (done, total, label) => void, for the progress line
+  /* ---------- submit ----------
+     payload  the JSON the form already builds for Export
+     files    [{name, slot, file}] — one per attached certificate
+     onStep   (done, total, label) => void
   */
   function submit(payload, files, onStep){
     files = files || [];
     var step = onStep || function(){};
     var p = payload.profile || {};
-    var folderName = safeName((p.empid || "no-id") + " - " + (p.name || "unnamed"), "unnamed");
-    var segments = [CFG.evidenceRoot, safeName(p.dept, "Unspecified department"), folderName];
-    var total = files.length + 3;
+    if(!p.empid) return Promise.reject(err("Enter the employee ID before submitting — it is what the submission is filed under."));
+
+    var total = files.length + 2;
     var done = 0;
     var tick = function(label){ done++; step(done, total, label); };
-    var folderPath, uploaded = [], failed = [];
+    var uploaded = [], failed = [];
 
     step(0, total, "Preparing");
 
-    return ensureFolder(segments).then(function(fp){
-      folderPath = fp;
-      tick("Evidence folder ready");
-
-      /* Certificates, one at a time — a burst of parallel PUTs to the same
-         new folder is what makes Graph start returning 429. */
-      var chain = Promise.resolve();
-      files.forEach(function(f, i){
-        chain = chain.then(function(){
-          var nm = safeName(f.name, "document-" + (i + 1));
-          return uploadFile(folderPath, nm, f.file).then(function(item){
-            uploaded.push({ name: nm, url: item && item.webUrl, size: f.file.size, slot: f.slot || null });
-            tick(nm);
-          }).catch(function(e){
-            failed.push({ name: nm, reason: e.message });
-            tick(nm + " — failed");
+    /* One at a time: each certificate is base64, and a burst of them is
+       both a large memory spike and a good way to hit Apps Script quotas. */
+    var chain = Promise.resolve();
+    files.forEach(function(f, i){
+      chain = chain.then(function(){
+        var mb = f.file.size / 1048576;
+        if(mb > CFG.maxMB){
+          failed.push({ name:f.name, reason:"Larger than " + CFG.maxMB + " MB" });
+          tick(f.name + " — too large");
+          return;
+        }
+        if(CFG.allowedTypes.indexOf(f.file.type) === -1){
+          failed.push({ name:f.name, reason:"Type not accepted: " + (f.file.type || "unknown") });
+          tick(f.name + " — wrong type");
+          return;
+        }
+        return readBase64(f.file).then(function(b64){
+          return post({
+            action:"upload", empid:p.empid, name:p.name, dept:p.dept,
+            slot:f.slot || "", slotTitle:f.slotTitle || "",
+            fileName:f.name, mimeType:f.file.type, data:b64
           });
+        }).then(function(res){
+          uploaded.push({ name:res.name, url:res.viewUrl, size:res.size, slot:f.slot || null });
+          tick(f.name);
+        }).catch(function(e){
+          failed.push({ name:f.name, reason:e.message });
+          tick(f.name + " — failed");
         });
       });
-      return chain;
-    }).then(function(){
-      /* The full form, verbatim, next to the certificates it refers to. */
-      var full = JSON.parse(JSON.stringify(payload));
-      full.evidence = uploaded;
-      full.evidenceFailed = failed;
-      full.submittedBy = emailOf(account);
-      full.submittedOn = new Date().toISOString();
-      full.cycle = CFG.cycle;
-      var blob = new Blob([JSON.stringify(full, null, 2)], { type: "application/json" });
-      return uploadFile(folderPath, "submission.json", blob).then(function(item){
-        tick("Form data saved");
-        return { full: full, jsonUrl: item && item.webUrl };
-      });
-    }).then(function(ctx){
-      /* The list row is what the SDC dashboard reads. The heavy detail
-         stays in submission.json; this is the index over it. */
-      var sc = payload.scores || {};
-      var fields = {
-        Title        : p.name || emailOf(account),
-        EmployeeID   : String(p.empid || ""),
-        Department   : p.dept || "",
-        Designation  : p.designation || "",
-        Cycle        : CFG.cycle,
-        GrandTotal   : Number(sc.grandTotal || 0),
-        MinimumRequired : Number(sc.minimumRequired || 0),
-        Eligible     : !!sc.eligibleForIncrement,
-        SubmittedBy  : emailOf(account),
-        SubmittedOn  : new Date().toISOString(),
-        EvidenceCount: uploaded.length,
-        EvidenceFolder: ctx.jsonUrl || "",
-        Status       : "Submitted"
+    });
+
+    return chain.then(function(){
+      tick("Certificates done");
+      return post({ action:"submit", payload:payload, evidence:uploaded, evidenceFailed:failed });
+    }).then(function(res){
+      tick("Submission recorded");
+      return {
+        reference : res.reference,
+        folderUrl : res.folderUrl,
+        jsonUrl   : res.jsonUrl,
+        uploaded  : uploaded.length,
+        failed    : failed
       };
-      return graph("/sites/" + CFG.siteId + "/lists/" + CFG.listId + "/items", {
-        method: "POST",
-        json: { fields: fields }
-      }).then(function(item){
-        tick("Submission recorded");
-        return {
-          itemId: item && item.id,
-          folderPath: folderPath,
-          jsonUrl: ctx.jsonUrl,
-          uploaded: uploaded.length,
-          failed: failed
-        };
-      });
     });
   }
 
-  /* ---------- server-side drafts ----------
-     The app folder in the signed-in user's own OneDrive. Private to them,
-     private to this app, and it needs no admin consent. */
-
-  function draftPath(){
-    return "/me/drive/special/approot:/" + encodeURIComponent(CFG.draftFile);
+  /* ---------- drafts ----------
+     Keyed by employee ID, because the form has no sign-in. Anyone who knows
+     an employee ID can load that draft — the same exposure as being able to
+     submit under it. */
+  function saveDraft(empid, data){
+    if(!empid) return Promise.reject(err("No employee ID yet."));
+    return post({ action:"draftSave", empid:empid, data:data }).then(function(r){ return r.savedAt; });
   }
 
-  function saveDraft(draft){
-    var body = new Blob([JSON.stringify({ savedAt: new Date().toISOString(), cycle: CFG.cycle, data: draft })],
-                        { type: "application/json" });
-    return graph(draftPath() + ":/content", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: body
-    }).then(function(item){ return item && item.lastModifiedDateTime; });
+  function loadDraft(empid){
+    if(!empid) return Promise.resolve(null);
+    return post({ action:"draftLoad", empid:empid }).then(function(r){ return r.draft || null; });
   }
 
-  function loadDraft(){
-    return graph(draftPath() + ":/content").then(function(d){
-      if(!d || !d.data) return null;
-      return d;
-    }).catch(function(e){
-      if(e.detail && e.detail.status === 404) return null;   /* nothing saved yet */
-      throw e;
-    });
+  function deleteDraft(empid){
+    if(!empid) return Promise.resolve(null);
+    return post({ action:"draftDrop", empid:empid }).catch(function(){ return null; });
   }
 
-  function deleteDraft(){
-    return graph(draftPath(), { method: "DELETE" }).catch(function(e){
-      if(e.detail && e.detail.status === 404) return null;
-      throw e;
-    });
-  }
+  function ping(){ return post({ action:"ping" }); }
 
-  /* ---------- public surface ---------- */
   window.PBAS = {
-    configured   : configured,
-    missing      : missing,
-    allowedDomain: CFG.allowedDomain,
-    init         : init,
-    signIn       : signIn,
-    signOut      : signOut,
-    account      : function(){ return account; },
-    email        : function(){ return emailOf(account); },
-    displayName  : function(){ return account ? (account.name || emailOf(account)) : ""; },
-    submit       : submit,
-    saveDraft    : saveDraft,
-    loadDraft    : loadDraft,
-    deleteDraft  : deleteDraft
+    configured : configured,
+    cycle      : CFG.cycle,
+    ping       : ping,
+    submit     : submit,
+    saveDraft  : saveDraft,
+    loadDraft  : loadDraft,
+    deleteDraft: deleteDraft
   };
 })();
 </script>
@@ -1671,12 +1470,10 @@ function App(){
   const cloudTimer = useRef(null);
 
   /* ---------- backend ---------- */
-  const [user, setUser] = useState(null);          // signed-in Entra account
-  const [authBusy, setAuthBusy] = useState(false);
-  const [authErr, setAuthErr] = useState("");
   const [cloud, setCloud] = useState("");          // draft status line
-  const [offer, setOffer] = useState(null);        // a newer draft found in OneDrive
+  const [offer, setOffer] = useState(null);        // a newer draft found on the server
   const [send, setSend] = useState(null);          // {phase, done, total, label, result, error}
+  const [looked, setLooked] = useState("");        // empid we have already looked up
   const backendOn = typeof PBAS !== "undefined" && PBAS.configured;
 
   /* ---------- draft restore ---------- */
@@ -1696,14 +1493,6 @@ function App(){
       }
     }catch(e){ /* storage unavailable */ }
     bootRef.current = true;
-
-    /* An existing Microsoft session survives a reload — pick it back up
-       silently, so the faculty member is not asked to sign in twice. */
-    if(backendOn){
-      PBAS.init()
-        .then(() => { if(PBAS.account()) setUser({email:PBAS.email(), name:PBAS.displayName()}); })
-        .catch(e => setAuthErr(e.message));
-    }
   }, []);
 
   /* ---------- draft save ---------- */
@@ -1721,33 +1510,36 @@ function App(){
     return () => clearTimeout(saveTimer.current);
   }, [state]);
 
-  /* ---------- draft to OneDrive ----------
-     Kept in the signed-in user's own app folder, so a form started on a
-     desktop can be finished on a laptop. Slower cadence than the local
-     save: this one crosses the network. */
+  /* ---------- draft to the server ----------
+     Keyed by employee ID: the form has no sign-in, so there is no other
+     handle on who is typing. Slower cadence than the local save, because
+     this one crosses the network. */
   useEffect(() => {
-    if(!bootRef.current || !user || !backendOn) return;
+    const empid = String(state.profile.empid || "").trim();
+    if(!bootRef.current || !backendOn || !empid) return;
     clearTimeout(cloudTimer.current);
     cloudTimer.current = setTimeout(() => {
       setCloud("saving");
-      PBAS.saveDraft({...state, docs:state.docs.map(({id,name,size,slot}) => ({id,name,size,slot}))})
+      PBAS.saveDraft(empid, {...state, docs:state.docs.map(({id,name,size,slot}) => ({id,name,size,slot}))})
         .then(() => { setCloud("saved"); setTimeout(() => setCloud(""), 2200); })
         .catch(() => setCloud("failed"));
-    }, 4000);
+    }, 5000);
     return () => clearTimeout(cloudTimer.current);
-  }, [state, user, backendOn]);
+  }, [state, backendOn]);
 
-  /* On sign-in, see whether OneDrive holds a draft newer than this tab's. */
-  const pullDraft = useCallback(() => {
-    if(!backendOn) return;
-    PBAS.loadDraft().then(d => {
+  /* The first time a complete-looking employee ID is typed, see whether the
+     server already holds a draft newer than this tab's. */
+  useEffect(() => {
+    const empid = String(state.profile.empid || "").trim();
+    if(!bootRef.current || !backendOn || empid.length < 3 || empid === looked) return;
+    setLooked(empid);
+    PBAS.loadDraft(empid).then(d => {
       if(!d || !d.data) return;
       let localAt = 0;
       try{ localAt = Number(localStorage.getItem(STORAGE + ":at") || 0); }catch(e){}
-      const remoteAt = new Date(d.savedAt).getTime();
-      if(remoteAt > localAt + 1000) setOffer(d);
+      if(new Date(d.savedAt).getTime() > localAt + 1000) setOffer(d);
     }).catch(() => {});
-  }, [backendOn]);
+  }, [state.profile.empid, backendOn, looked]);
 
   const acceptDraft = () => {
     if(!offer) return;
@@ -1763,20 +1555,6 @@ function App(){
     setOffer(null);
     setPage("profile");
     window.scrollTo({top:0});
-  };
-
-  /* ---------- sign in / out ---------- */
-  const doSignIn = () => {
-    setAuthErr(""); setAuthBusy(true);
-    PBAS.signIn()
-      .then(() => { setUser({email:PBAS.email(), name:PBAS.displayName()}); pullDraft(); })
-      .catch(e => setAuthErr(e.message))
-      .then(() => setAuthBusy(false));
-  };
-
-  const doSignOut = () => {
-    setAuthBusy(true);
-    PBAS.signOut().then(() => { setUser(null); setOffer(null); setCloud(""); setAuthBusy(false); });
   };
 
   /* ---------- printing renders every page ---------- */
@@ -1979,10 +1757,10 @@ function App(){
     }
   };
 
-  /* Hand the form to SharePoint: certificates first, then submission.json
-     beside them, then the row the SDC dashboard reads. */
+  /* Hand the form to the SDC: certificates first, then the submission
+     itself, which files submission.json and adds the spreadsheet row. */
   const sendToSDC = () => {
-    if(!backendOn || !user || (send && send.phase === "sending")) return;
+    if(!backendOn || (send && send.phase === "sending")) return;
     const files = state.docs
       .filter(d => filesRef.current[d.id])
       .map(d => ({name:d.name, slot:d.slot || null, file:filesRef.current[d.id]}));
@@ -1991,7 +1769,7 @@ function App(){
     PBAS.submit(buildPayload(), files, (done, total, label) => setSend({phase:"sending", done, total, label}))
       .then(res => {
         setSend({phase:"done", result:res});
-        PBAS.deleteDraft().catch(() => {});
+        PBAS.deleteDraft(String(state.profile.empid || "").trim()).catch(() => {});
         try{
           localStorage.removeItem(STORAGE);
           localStorage.removeItem(STORAGE + ":at");
@@ -2011,7 +1789,8 @@ function App(){
       localStorage.removeItem(STORAGE);
       localStorage.removeItem(STORAGE + ":at");
     }catch(e){}
-    if(user && backendOn) PBAS.deleteDraft().catch(() => {});
+    if(backendOn) PBAS.deleteDraft(String(state.profile.empid || "").trim()).catch(() => {});
+    setLooked("");
   };
 
   const buildPayload = useCallback(() => ({
@@ -2096,20 +1875,11 @@ function App(){
         <span className={"docpill" + (allSlots.length && liveDocs === allSlots.length ? " done" : "")}>
           Documents <b className="tnum">{liveDocs} / {allSlots.length}</b>
         </span>
-        {backendOn && (user
-          ? <React.Fragment>
-              {cloud && <span className={"cloudpill noprint" + (cloud === "failed" ? " failed" : "")}>
-                {cloud === "saving" ? "Saving to OneDrive\u2026" : cloud === "saved" ? "Draft saved to OneDrive" : "OneDrive draft failed"}
-              </span>}
-              <span className="acct noprint">
-                <span className="dot"></span>
-                <span className="who"><b>{user.name}</b><span>{user.email}</span></span>
-                <button type="button" onClick={doSignOut} disabled={authBusy}>Sign out</button>
-              </span>
-            </React.Fragment>
-          : <button type="button" className="btn btn-sm noprint" onClick={doSignIn} disabled={authBusy}>
-              {authBusy ? "Signing in\u2026" : "Sign in"}
-            </button>)}
+        {backendOn && cloud && (
+          <span className={"cloudpill noprint" + (cloud === "failed" ? " failed" : "")}>
+            {cloud === "saving" ? "Saving\u2026" : cloud === "saved" ? "Draft saved to the SDC" : "Server draft failed"}
+          </span>
+        )}
         <button type="button" className="btn btn-quiet btn-sm" onClick={toggleTheme}>{dark === null ? "Theme" : dark ? "Light" : "Dark"}</button>
         <button type="button" className="btn btn-sm" onClick={exportJSON}>Export</button>
         <button type="button" className="btn btn-sm" onClick={() => setPrinting(true)}>Print</button>
@@ -2147,31 +1917,10 @@ function App(){
         <main className="main">
           <div className="page">
 
-            {backendOn && !user && !printing && (
-              <div className="notebox noprint">
-                <div>
-                  <b>Sign in to submit.</b> The form fills in and prints without signing in, but
-                  sending it to the SDC needs your college Microsoft account.
-                </div>
-                <div className="sp"></div>
-                <button type="button" className="btn btn-primary btn-sm" onClick={doSignIn} disabled={authBusy}>
-                  {authBusy ? "Signing in\u2026" : "Sign in with @" + PBAS.allowedDomain}
-                </button>
-              </div>
-            )}
-
-            {authErr && !printing && (
-              <div className="issues noprint">
-                <h4>Sign-in failed</h4>
-                <ul><li><span>{authErr}</span>
-                  <button type="button" onClick={() => setAuthErr("")}>Dismiss</button></li></ul>
-              </div>
-            )}
-
             {offer && !printing && (
               <div className="notebox noprint">
                 <div>
-                  <b>A newer draft is saved in your OneDrive</b>, from{" "}
+                  <b>A newer draft is saved against employee ID {state.profile.empid}</b>, from{" "}
                   {new Date(offer.savedAt).toLocaleString("en-IN")}. Loading it replaces what is on
                   screen now. Certificates will need re-attaching either way.
                 </div>
@@ -3062,33 +2811,17 @@ function App(){
 
                     {!backendOn && (
                       <p className="sub" style={{margin:0}}>
-                        The backend is not configured on this copy of the form
-                        {typeof PBAS !== "undefined" && PBAS.missing.length
-                          ? " \u2014 still to be filled in: " + PBAS.missing.join(", ") + "."
-                          : "."}{" "}
-                        Use <b>Print</b> or <b>Export</b> to hand the appraisal in, and see
-                        backend/ENTRA-SETUP.md.
+                        The backend is not configured on this copy of the form \u2014 the Apps
+                        Script URL is still a placeholder. Use <b>Print</b> or <b>Export</b> to
+                        hand the appraisal in, and see backend/GOOGLE-SETUP.md.
                       </p>
                     )}
 
-                    {backendOn && !user && (
+                    {backendOn && (!send || send.phase === "error") && (
                       <React.Fragment>
                         <p className="sub" style={{margin:0}}>
-                          Sign in with your @{PBAS.allowedDomain} account. Your submission is
-                          recorded against that address.
-                        </p>
-                        <div className="sendrow">
-                          <button type="button" className="btn btn-primary" onClick={doSignIn} disabled={authBusy}>
-                            {authBusy ? "Signing in\u2026" : "Sign in to submit"}
-                          </button>
-                        </div>
-                      </React.Fragment>
-                    )}
-
-                    {backendOn && user && (!send || send.phase === "error") && (
-                      <React.Fragment>
-                        <p className="sub" style={{margin:0}}>
-                          Submitting as <b>{user.email}</b>. This uploads{" "}
+                          Filed under <b>{state.profile.empid || "\u2014"}</b>, {state.profile.name || "unnamed"}.
+                          This uploads{" "}
                           {state.docs.filter(d => filesRef.current[d.id]).length} certificate
                           {state.docs.filter(d => filesRef.current[d.id]).length === 1 ? "" : "s"} and
                           the completed form, and records a grand total of{" "}
@@ -3127,10 +2860,10 @@ function App(){
                           {send.result.uploaded === 1 ? "" : "s"} and the completed form are with the SDC.
                         </div>
                         <p className="receipt">
-                          Filed under <code>{send.result.folderPath}</code>
-                          {send.result.itemId ? <React.Fragment> &middot; reference <code>{send.result.itemId}</code></React.Fragment> : null}.
-                          {send.result.jsonUrl && <React.Fragment>{" "}
-                            <a href={send.result.jsonUrl} target="_blank" rel="noopener noreferrer">Open in SharePoint</a>.
+                          Reference <code>{send.result.reference}</code>. Keep it \u2014 it is what
+                          identifies this submission to the SDC.
+                          {send.result.folderUrl && <React.Fragment>{" "}
+                            <a href={send.result.folderUrl} target="_blank" rel="noopener noreferrer">Open the evidence folder</a>.
                           </React.Fragment>}
                         </p>
                         {send.result.failed.length > 0 && (

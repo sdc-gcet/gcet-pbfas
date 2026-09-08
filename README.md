@@ -83,33 +83,32 @@ Babel and MSAL load from cdnjs, so the page needs an internet connection.
 
 ## The backend
 
-`gcet.edu.in` runs on Microsoft 365, so faculty sign in with the Microsoft account they
-already use for college mail, and the appraisal is filed into SharePoint:
+One Google Apps Script web app behind the whole form — no sign-in, no paid tier:
 
-- **Sign-in** — Entra ID, restricted to `@gcet.edu.in`. Every submission carries the
-  address that signed in.
-- **Submission** — a row in the **PBAS Submissions** list: name, employee ID, department,
-  designation, grand total, minimum required, the eligibility verdict, and who submitted when.
-- **Evidence** — the certificates go to `PBAS 2025-26/<Department>/<EmployeeID - Name>/`
-  in the **PBAS Evidence** library, with `submission.json` — the complete form, every
-  field and every item-wise score — filed beside them.
-- **Drafts** — the browser draft is unchanged; a signed-in user's draft is also written to
-  their own OneDrive, private to them, so a form started on one machine can be finished on
-  another. On sign-in the form offers the saved copy if it is newer, rather than overwriting.
+- **Submissions** — a row in the **PBAS Submissions 2025-26** spreadsheet: name, employee
+  ID, department, designation, grand total, minimum required, the eligibility verdict, how
+  many mandatory items were met, and links to the evidence.
+- **Evidence** — certificates go to `GCET PBAS 2025-26/<Department>/<EmployeeID - Name>/`
+  in Drive, with `submission-<stamp>.json` — the complete form, every field and every
+  item-wise score — filed beside them.
+- **Drafts** — the browser draft is unchanged; a draft is also written to Drive keyed by
+  employee ID, so a form started on one machine can be finished on another. Type the
+  employee ID and the form offers the saved copy if it is newer, rather than overwriting.
 
-Setup is `backend/ENTRA-SETUP.md`. Two of its steps — the app registration and admin
-consent for `Sites.ReadWrite.All` — need whoever runs the college's Microsoft 365 tenant;
-that section is written to be handed over as-is.
+Setup is `backend/GOOGLE-SETUP.md` — about fifteen minutes, and it needs nobody's
+permission but the SDC's.
 
-Until the five IDs in `PBAS_CONFIG` are filled in, the form behaves exactly as it did before
-the backend existed: local draft, print and export, no sign-in button, no network. A
-half-configured deployment degrades to the old working form instead of failing at the last step.
+Until the `/exec` URL is in `PBAS_CONFIG.endpoint`, the form behaves exactly as it did
+before the backend existed: local draft, print and export, no network. A half-configured
+deployment degrades to the working form rather than failing at the last step.
 
-`backend/SETUP.md`, `backend/Code.gs` and `backend/firestore.rules` describe an earlier
-Firebase + Google Apps Script design. They do not apply — Google sign-in cannot
-authenticate a Microsoft account. Kept for reference only.
+### Reading the data
 
-### Checking it without a tenant
+Open **PBAS Submissions 2025-26** in the Drive folder. One row per submission, with links
+to each person's evidence folder and their full `submission.json`. Filter it, sort it, or
+drop a pivot table on it for per-department totals — no dashboard to build or maintain.
+
+### Checking it without deploying
 
 ```
 cd backend
@@ -117,16 +116,30 @@ npm install
 npm run check
 ```
 
-`smoke-test.js` extracts the live module from `index.html` and drives a full submission
-against a fake Graph — folder creation, the already-exists path, filename sanitising,
-the upload sequence, the list row, progress reporting, the missing-draft case.
+`parse-check.js` compiles both `<script>` blocks; `smoke-test.js` extracts the live module
+from `index.html` and drives a full submission against a mocked endpoint — oversize and
+wrong-type files, a server-side rejection, drafts, and the two Apps Script
+misconfigurations that cause most failures. No network, no Google account.
+
+### The Microsoft alternative
+
+`backend/ENTRA-SETUP.md` describes a Microsoft Entra + SharePoint version of the same
+backend, built and tested before this one. It signs faculty in with their real
+`@gcet.edu.in` accounts — the college runs on Microsoft 365 — so every submission
+carries a verified identity. It needs tenant-admin consent, which is why the Google
+version is what ships. If the open endpoint below becomes a problem, that is the way out.
+
+`backend/firestore.rules` belongs to an abandoned Firebase design and is unused.
 
 ## Known limitations
 
-- **Certificates are visible across the library.** SharePoint's item-level permissions apply
-  to lists, not document libraries, so a faculty member with Contribute could browse another's
-  certificates by going into SharePoint directly. The form gives them no way to. Closing it
-  needs a server-side middle tier — see the note in `backend/ENTRA-SETUP.md`.
+- **The endpoint is open, and there is no identity check.** Faculty have Microsoft accounts,
+  not Google ones, so there is nothing to sign in against. Anyone who finds the `/exec` URL
+  — it is in this public page — can submit under any name and employee ID, and anyone
+  who knows an employee ID can load that person's draft. Vet submissions against the faculty
+  list. The script writes only inside its own Drive folder, caps files at 5 MB and accepts
+  only PDF/JPG/PNG/WebP, so the ceiling is junk in a folder. Closing it properly means the
+  Entra version described above.
 - **Attached files do not survive a page reload.** Browsers do not allow a page to repopulate
   a file input. The draft remembers each filename and marks it for re-attaching.
 - **Drafts from the pre-16-item version are not carried over.** The stored schema changed, so
